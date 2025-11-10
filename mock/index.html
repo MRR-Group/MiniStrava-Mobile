@@ -1,0 +1,245 @@
+<!DOCTYPE html>
+<html lang="pl">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>MiniStrava — Start</title>
+
+  <!-- CDN -->
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css"/>
+  <link rel="stylesheet" href="https://unpkg.com/leaflet@1.9.4/dist/leaflet.css" crossorigin=""/>
+  <script src="https://unpkg.com/leaflet@1.9.4/dist/leaflet.js" crossorigin=""></script>
+
+  <!-- Tailwind theme: czysta sportowa paleta -->
+  <script>
+    tailwind.config = {
+      theme: {
+        extend: {
+          colors: {
+            primary:    "#16a34a",   // emerald 600
+            primaryHi:  "#22c55e",   // emerald 500
+            primaryDark:"#15803d",   // emerald 700
+            surface:    "#f6f7f9",
+            card:       "#ffffff",
+            line:       "#e6e9ef",
+            textMain:   "#0f172a",   // slate 900
+            textSub:    "#64748b"    // slate 500
+          },
+          boxShadow: {
+            card: "0 6px 20px rgba(2,6,23,.08)"
+          }
+        }
+      }
+    }
+  </script>
+
+  <style>
+    #routeMap { height: 220px; }
+    @media (min-width:420px){ #routeMap{ height:260px; } }
+  </style>
+</head>
+<body class="bg-surface text-textMain">
+  <!-- App container (telefon) -->
+  <div class="mx-auto max-w-md min-h-screen bg-card shadow-card">
+    <!-- HEADER — kompakt + mocny gradient, zero mydła -->
+    <header class="h-14 bg-gradient-to-r from-primaryDark to-primary flex items-center justify-between px-4 text-white">
+      <div class="flex items-center gap-2">
+        <span class="w-8 h-8 rounded-lg bg-white/15 grid place-items-center">
+          <i class="fa-solid fa-person-running text-sm"></i>
+        </span>
+        <div class="leading-tight">
+          <p class="text-[11px] opacity-90">MiniStrava</p>
+          <h1 class="text-base font-semibold">Panel aktywności</h1>
+        </div>
+      </div>
+      <div class="flex items-center gap-2">
+        <span class="px-2.5 h-7 inline-flex items-center rounded-full bg-white/15 text-[11px]">Rok 2025</span>
+        <button class="w-8 h-8 rounded-full bg-white/15 grid place-items-center">
+          <i class="fa-regular fa-user text-sm"></i>
+        </button>
+      </div>
+    </header>
+
+    <!-- MAIN -->
+    <main class="px-4 py-4 pb-24 space-y-12">
+
+      <!-- KAFEL TRENINGU -->
+      <section class="space-y-3">
+        <div class="flex items-start justify-between">
+          <div>
+            <p class="text-[12px] text-textSub">Dzisiejszy trening</p>
+            <h2 class="text-xl font-bold text-textMain">Bieg — 6.3 km</h2>
+            <p class="text-[12px] text-textSub mt-0.5">Czas 31:08 • Tempo 4:56/km</p>
+          </div>
+          <button class="px-3 py-1.5 rounded-lg bg-primary text-white text-sm font-medium shadow-card">
+            Podgląd
+          </button>
+        </div>
+
+        <div class="flex gap-2 flex-wrap">
+          <span class="px-2.5 py-1 rounded-full bg-surface border border-line text-[11px]">HR 148</span>
+          <span class="px-2.5 py-1 rounded-full bg-surface border border-line text-[11px]">VO₂ 41</span>
+          <span class="px-2.5 py-1 rounded-full bg-surface border border-line text-[11px]">Kadencja 170</span>
+        </div>
+
+        <!-- Pasek akcji -->
+        <div class="grid grid-cols-4 gap-2">
+          <button class="col-span-2 inline-flex items-center justify-center gap-2 px-3 py-2.5 rounded-lg bg-primary text-white font-medium">
+            <i class="fa-solid fa-play"></i> Start
+          </button>
+          <button class="inline-flex items-center justify-center rounded-lg bg-surface border border-line">
+            <i class="fa-solid fa-bolt text-primary"></i>
+          </button>
+          <button class="inline-flex items-center justify-center rounded-lg bg-surface border border-line">
+            <i class="fa-solid fa-gear text-primary"></i>
+          </button>
+        </div>
+      </section>
+
+      <!-- MAPA -->
+      <section class="space-y-3">
+        <div class="flex items-center justify-between">
+          <h3 class="text-[15px] font-semibold">Trasa na mapie</h3>
+          <div class="flex gap-2">
+            <button id="locateBtn" class="px-3 py-1.5 rounded-lg bg-primary text-white text-xs font-medium">
+              <i class="fa-solid fa-location-crosshairs mr-1"></i> Pozycja
+            </button>
+            <button id="clearBtn" class="px-3 py-1.5 rounded-lg bg-surface border border-line text-xs">
+              <i class="fa-solid fa-rotate mr-1"></i> Reset
+            </button>
+          </div>
+        </div>
+        <div id="routeMap" class="rounded-xl overflow-hidden border border-line"></div>
+        <p class="text-[11px] text-textSub">Map data © OpenStreetMap • Tiles OSM</p>
+      </section>
+
+      <!-- LISTA AKTYWNOŚCI -->
+      <section class="space-y-2">
+        <!-- Segmenty -->
+        <div class="bg-surface border border-line rounded-full p-1 flex gap-1">
+          <button class="px-3 py-1.5 rounded-full bg-primary text-white text-xs font-medium">Wszystkie</button>
+          <button class="px-3 py-1.5 rounded-full text-xs hover:bg-card">Biegi</button>
+          <button class="px-3 py-1.5 rounded-full text-xs hover:bg-card">Rower</button>
+          <button class="px-3 py-1.5 rounded-full text-xs hover:bg-card">Pływanie</button>
+          <button class="px-3 py-1.5 rounded-full text-xs hover:bg-card">Siłownia</button>
+        </div>
+
+        <div class="divide-y divide-line">
+          <div class="py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-lg bg-surface border border-line grid place-items-center text-primary">
+                <i class="fa-solid fa-person-running"></i>
+              </span>
+              <div class="leading-tight">
+                <p class="text-sm font-medium">Bieg wieczorny</p>
+                <p class="text-[12px] text-textSub">6.3 km • 31:08 • 4:56/km</p>
+              </div>
+            </div>
+            <span class="text-[12px] text-textSub">Dziś</span>
+          </div>
+
+          <div class="py-3 flex items-center justify-between">
+            <div class="flex items-center gap-3">
+              <span class="w-9 h-9 rounded-lg bg-surface border border-line grid place-items-center text-primary">
+                <i class="fa-solid fa-bicycle"></i>
+              </span>
+              <div class="leading-tight">
+                <p class="text-sm font-medium">Rower — tlen</p>
+                <p class="text-[12px] text-textSub">18.2 km • 44:21</p>
+              </div>
+            </div>
+            <span class="text-[12px] text-textSub">Wczoraj</span>
+          </div>
+        </div>
+      </section>
+
+      <!-- RANKING -->
+      <section class="space-y-2">
+        <div class="flex items-center justify-between">
+          <h3 class="text-[15px] font-semibold">Ranking tygodnia</h3>
+          <a href="#" class="text-xs text-primary font-medium">Zobacz wszystko</a>
+        </div>
+        <div class="divide-y divide-line">
+          <div class="py-2 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-6 text-center font-bold text-primary">1</span>
+              <span class="font-medium">KacperekUWU</span>
+            </div>
+            <span class="text-sm text-textMain">62.4 km</span>
+          </div>
+          <div class="py-2 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-6 text-center font-bold text-primary">2</span>
+              <span>Dominik</span>
+            </div>
+            <span class="text-sm text-textMain">54.1 km</span>
+          </div>
+          <div class="py-2 flex items-center justify-between">
+            <div class="flex items-center gap-2">
+              <span class="w-6 text-center font-bold text-primary">3</span>
+              <span>Sebastian</span>
+            </div>
+            <span class="text-sm text-textMain">47.3 km</span>
+          </div>
+        </div>
+      </section>
+    </main>
+
+    <!-- BOTTOM NAV -->
+    <nav class="fixed bottom-0 left-1/2 -translate-x-1/2 w-full max-w-md bg-white border-t border-line">
+      <div class="grid grid-cols-4 py-2 text-[12px] text-textSub">
+        <button class="flex flex-col items-center text-primary">
+          <i class="fa-solid fa-house text-lg mb-0.5"></i>Start
+        </button>
+        <button class="flex flex-col items-center">
+          <i class="fa-solid fa-play text-lg mb-0.5"></i>Aktywność
+        </button>
+        <button class="flex flex-col items-center">
+          <i class="fa-solid fa-chart-line text-lg mb-0.5"></i>Statystyki
+        </button>
+        <button class="flex flex-col items-center">
+          <i class="fa-solid fa-user text-lg mb-0.5"></i>Profil
+        </button>
+      </div>
+    </nav>
+  </div>
+
+  <!-- MAP JS -->
+  <script>
+    const map = L.map('routeMap', { zoomControl:false });
+    const base = L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png',
+      { maxZoom: 19, attribution: '&copy; OpenStreetMap contributors' }).addTo(map);
+
+    const route = [
+      [52.22977,21.01178],
+      [52.23275,21.00642],
+      [52.23537,21.01243],
+      [52.23787,21.02050],
+      [52.23365,21.02666],
+      [52.22977,21.01178],
+    ];
+
+    const poly = L.polyline(route, { weight:5, color:'#16a34a' }).addTo(map);
+    L.marker(route[0], { icon: L.divIcon({html:'<i class="fa-solid fa-flag-checkered" style="color:#16a34a"></i>',className:''}) }).addTo(map);
+    L.marker(route.at(-1), { icon: L.divIcon({html:'<i class="fa-solid fa-stop" style="color:#ef4444"></i>',className:''}) }).addTo(map);
+    map.fitBounds(poly.getBounds(), { padding:[20,20] });
+
+    document.getElementById('locateBtn').addEventListener('click', () => {
+      map.locate({ setView:true, maxZoom:15 });
+    });
+    map.on('locationfound', (e) => {
+      L.circleMarker(e.latlng, { radius:6, color:'#16a34a', fillColor:'#16a34a', fillOpacity:.9 }).addTo(map)
+        .bindTooltip('Jesteś tutaj').openTooltip();
+    });
+
+    document.getElementById('clearBtn').addEventListener('click', () => {
+      map.eachLayer(l => { if(l!==base) map.removeLayer(l) });
+      const p = L.polyline(route, { weight:5, color:'#16a34a' }).addTo(map);
+      L.marker(route[0], { icon: L.divIcon({html:'<i class="fa-solid fa-flag-checkered" style="color:#16a34a"></i>',className:''}) }).addTo(map);
+      L.marker(route.at(-1), { icon: L.divIcon({html:'<i class="fa-solid fa-stop" style="color:#ef4444"></i>',className:''}) }).addTo(map);
+      map.fitBounds(p.getBounds(), { padding:[20,20] });
+    });
+  </script>
+</body>
+</html>
