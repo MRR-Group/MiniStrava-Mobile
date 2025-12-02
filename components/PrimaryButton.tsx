@@ -1,14 +1,16 @@
 import { LinearGradient } from 'expo-linear-gradient';
-import { Pressable, Text, View } from 'react-native';
+import { Text, TouchableOpacity } from 'react-native';
+import { clsx } from 'clsx';
 
 type Props = { 
   title: string 
-  onClick?: () => void;
+  loading?: boolean
+  onPress?: () => void
 };
 
-export const PrimaryButton = (({ title, onClick }: Props) => {
+export const PrimaryButton = (({ title, loading, onPress }: Props) => {
   return (
-    <Pressable className="rounded-custom transition-transform active:scale-95" onPress={onClick}>
+    <TouchableOpacity className={clsx(`rounded-custom transition-transform`, !loading &&  "active:scale-95", loading && "cursor-not-allowed")} disabled={loading} onPress={onPress}>
       <LinearGradient
         dither
         start={{ x: 0.2, y: 1 }}
@@ -23,9 +25,9 @@ export const PrimaryButton = (({ title, onClick }: Props) => {
         style={{ borderRadius: 18 }}
       >
         <Text className="p-4 text-center text-text text-sm font-bold select-none">
-          {title}
+          {loading ? "Loading..." : title}
         </Text>
       </LinearGradient>
-    </Pressable>
+    </TouchableOpacity>
   );
 });

@@ -13,12 +13,13 @@ type Props = {
 export const Input = ({ placeholder, control, errors, name, label, password }: Props) => (
   <View>
     <Text className="pb-2 text-xs text-muted">{label ?? name}</Text>
+
     <Controller
       control={control}
       rules={{required: true}}
-      render={({ field: { onChange, onBlur, value } }) => (
+      name={name}
+      render={({ field: { onChange, onBlur, value }}) => (
         <TextInput
-          id={name}
           placeholderTextColor="#9aa3b2"
           className="border border-white/15 focus:border-white px-3 py-2.5 rounded-xl text-white bg-transparent outline-none transition-colors"
           placeholder={placeholder}
@@ -28,7 +29,6 @@ export const Input = ({ placeholder, control, errors, name, label, password }: P
           secureTextEntry={password}
         />
       )}
-      name="firstName"
     />
     
     {errors && errors[name] && (
