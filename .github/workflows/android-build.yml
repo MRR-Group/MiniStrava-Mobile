@@ -1,0 +1,148 @@
+name: Android Release (signed)
+
+on:
+  workflow_dispatch:
+  push:
+    branches: [main]
+
+permissions:
+  contents: write
+
+jobs:
+  android:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+          cache: npm
+
+      - name: Install deps
+        run: npm ci
+
+      - name: Setup Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 17
+          cache: gradle
+
+      - name: Prebuild Android
+        run: npx expo prebuild --platform android --non-interactive
+
+      - name: Restore Android keystore
+        working-directory: android
+        run: |
+          mkdir -p app/keystores
+          echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > app/keystores/release.jks
+
+      - name: Patch android/app/build.gradle (release signing)
+        run: |
+          python - <<'PY'
+          from pathlib import Path
+          import re
+
+          p = Path("android/app/build.gradle")
+          s = p.read_text(encoding="utf-8")
+
+          marker = "SIGNING_PATCH_APPLIED"
+          if marker not in s:
+              release_cfg = r'''
+                  // ''' + marker + r'''
+                  release {
+                      def ksPath = System.getenv("ANDROID_KEYSTORE_PATH") ?: "app/keystores/release.jks"
+                      storeFile file(ksPath)
+                      storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                      keyAlias System.getenv("ANDROID_KEY_ALIAS")
+                      keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+                  }
+              '''
+
+              def inject_release_signing(m: re.Match) -> str:
+                  block = m.group(0)
+                  if re.search(r'\brelease\s*\{', block):
+                      return block
+                  return re.sub(r'\n\s*\}\s*$', "\n" + release_cfg + "\n    }\n", block)
+
+              s2 = re.sub(r'signingConfigs\s*\{[\s\S]*?\n\s*\}\s*', inject_release_signing, s, count=1)
+              if s2 == s:
+                  raise SystemExit("No signingConfigs { ... }")
+              s = s2
+
+              def patch_release_block(m: re.Match) -> str:
+                  block = m.group(0)
+                  block = re.sub(r'signingConfig\s+signingConfigs\.debug\b', 'signingConfig signingConfigs.release', block)
+                  if "signingConfig signingConfigs." not in block:
+                      block = re.sub(r'release\s*\{\s*', 'release {\n            signingConfig signingConfigs.release\n', block, count=1)
+                  return block
+
+              s2 = re.sub(
+                  r'buildTypes\s*\{[\s\S]*?\brelease\s*\{[\s\S]*?\n\s*\}[\s\S]*?\n\s*\}',
+                  lambda m: re.sub(r'\brelease\s*\{[\s\S]*?\n\s*\}', patch_release_block, m.group(0), count=1),
+                  s,
+                  count=1
+              )
+              s = s2
+              p.write_text(s, encoding="utf-8")
+
+          print("OK patched:", p)
+          PY
+
+      - name: Build APK + AAB
+        working-directory: android
+        env:
+          ANDROID_KEYSTORE_PATH: app/keystores/release.jks
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          ./gradlew assembleRelease
+          ./gradlew bundleRelease
+
+      - name: Read version from Gradle
+        id: ver
+        run: |
+          python - <<'PY'
+          import re
+          from pathlib import Path
+
+          s = Path("android/app/build.gradle").read_text(encoding="utf-8")
+
+          vn = re.search(r'versionName\s+"([^"]+)"', s)
+          vc = re.search(r'versionCode\s+(\d+)', s)
+
+          if not vn or not vc:
+              raise SystemExit("Couldn't parse versionName/versionCode from android/app/build.gradle")
+
+          versionName = vn.group(1)
+          versionCode = vc.group(1)
+
+          tag = f"v{versionName}+{versionCode}"
+          name = f"{versionName} ({versionCode})"
+
+          print("tag:", tag)
+          with open("${GITHUB_OUTPUT}", "a", encoding="utf-8") as f:
+              f.write(f"tag={tag}\n")
+              f.write(f"name={name}\n")
+              f.write(f"versionName={versionName}\n")
+              f.write(f"versionCode={versionCode}\n")
+          PY
+
+      - name: Rename outputs (stable names)
+        run: |
+          mkdir -p dist
+          cp android/app/build/outputs/apk/release/*.apk dist/app-release-${{ steps.ver.outputs.tag }}.apk
+          cp android/app/build/outputs/bundle/release/*.aab dist/app-release-${{ steps.ver.outputs.tag }}.aab
+
+      - name: Create or update GitHub Release + upload assets
+        uses: softprops/action-gh-release@v2
+        with:
+          tag_name: ${{ steps.ver.outputs.tag }}
+          name: ${{ steps.ver.outputs.name }}
+          generate_release_notes: true
+          files: |
+            dist/*.apk
+            dist/*.aab

@@ -1,7 +1,11 @@
-import '../global.css';
+import { Stack } from "expo-router";
+import { AppProviders } from "@/core/bootstrap/AppProviders";
+import "../global.css";
 
-import { Stack } from 'expo-router';
-
-export default function Layout() {
-  return <Stack />;
+export default function RootLayout() {
+  return (
+    <AppProviders>
+      <Stack screenOptions={{ headerShown: false }} />
+    </AppProviders>
+  );
 }

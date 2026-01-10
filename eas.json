@@ -1,0 +1,13 @@
+{
+  "build": {
+    "android-ci": {
+      "android": { "buildType": "apk" }
+    },
+    "android-release": {
+      "android": { "buildType": "app-bundle" }
+    },
+    "ios-ci": {
+      "ios": { "simulator": false }
+    }
+  }
+}
