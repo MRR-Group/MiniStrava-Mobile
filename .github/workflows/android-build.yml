@@ -51,22 +51,30 @@ jobs:
           bash ./gradlew assembleRelease
           bash ./gradlew bundleRelease
 
-      - name: Read version
+      - name: Read version from package.json
         id: ver
         run: |
-          node -e '
+          node - <<'NODE'
+          const pkg = require("./package.json");
+
+          const versionName = pkg.version;
+          if (!versionName) {
+            console.error("Missing version in package.json");
+            process.exit(1);
+          }
+
+          const versionCode = process.env.GITHUB_RUN_NUMBER;
+
+          const tag = "v" + versionName + "+" + versionCode;
+          const name = versionName + " (" + versionCode + ")";
+
           const fs = require("fs");
-          const cfg = JSON.parse(fs.readFileSync("app.json","utf8"));
-          const v = cfg.expo && cfg.expo.version;
-          const vc = cfg.expo && cfg.expo.android && cfg.expo.android.versionCode;
-          if(!v || !vc){ console.error("Missing expo.version or expo.android.versionCode in app.json"); process.exit(1); }
-          const tag = "v" + v + "+" + vc;
-          const name = v + " (" + vc + ")";
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, "tag=" + tag + "\n");
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, "name=" + name + "\n");
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, "versionName=" + v + "\n");
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, "versionCode=" + vc + "\n");
-          '
+          const out = process.env.GITHUB_OUTPUT;
+          fs.appendFileSync(out, "tag=" + tag + "\n");
+          fs.appendFileSync(out, "name=" + name + "\n");
+          fs.appendFileSync(out, "versionName=" + versionName + "\n");
+          fs.appendFileSync(out, "versionCode=" + versionCode + "\n");
+          NODE
 
       - name: Rename outputs (stable names)
         run: |
