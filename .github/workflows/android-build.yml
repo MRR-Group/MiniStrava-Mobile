@@ -36,6 +36,10 @@ jobs:
           mkdir -p app/keystores
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > app/keystores/release.jks
 
+      - name: Make gradlew executable
+        working-directory: android
+        run: chmod +x ./gradlew
+
       - name: Build APK + AAB
         working-directory: android
         env:
@@ -44,8 +48,8 @@ jobs:
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          ./gradlew assembleRelease
-          ./gradlew bundleRelease
+          bash ./gradlew assembleRelease
+          bash ./gradlew bundleRelease
 
       - name: Read version
         id: ver
