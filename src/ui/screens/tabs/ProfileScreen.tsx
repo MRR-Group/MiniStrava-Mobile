@@ -2,7 +2,7 @@ import { View, Text, Pressable } from "react-native";
 import { router } from "expo-router";
 import { logout } from "@/application/usecases/auth/logout";
 
-export function HomeScreen() {
+export function ProfileScreen() {
   const onLogout = async () => {
     await logout();
     router.replace("/(auth)/login");
