@@ -48,47 +48,38 @@ jobs:
           p = Path("android/app/build.gradle")
           s = p.read_text(encoding="utf-8")
 
-          marker = "SIGNING_PATCH_APPLIED"
-          if marker not in s:
-              release_cfg = r'''
-                  // ''' + marker + r'''
-                  release {
-                      def ksPath = System.getenv("ANDROID_KEYSTORE_PATH") ?: "app/keystores/release.jks"
-                      storeFile file(ksPath)
-                      storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-                      keyAlias System.getenv("ANDROID_KEY_ALIAS")
-                      keyPassword System.getenv("ANDROID_KEY_PASSWORD")
-                  }
-              '''
+          release_cfg = """
+              release {
+                  def ksPath = System.getenv("ANDROID_KEYSTORE_PATH") ?: "app/keystores/release.jks"
+                  storeFile file(ksPath)
+                  storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                  keyAlias System.getenv("ANDROID_KEY_ALIAS")
+                  keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+              }
+          """
 
-              def inject_release_signing(m: re.Match) -> str:
-                  block = m.group(0)
-                  if re.search(r'\brelease\s*\{', block):
-                      return block
-                  return re.sub(r'\n\s*\}\s*$', "\n" + release_cfg + "\n    }\n", block)
+          m = re.search(r'(signingConfigs\s*\{)([\s\S]*?)(\n\s*\}\s*)(?=\n\s*buildTypes\s*\{)', s)
+          if not m:
+              raise SystemExit("signingConfigs not found")
 
-              s2 = re.sub(r'signingConfigs\s*\{[\s\S]*?\n\s*\}\s*', inject_release_signing, s, count=1)
-              if s2 == s:
-                  raise SystemExit("No signingConfigs { ... }")
-              s = s2
+          head, body, tail = m.group(1), m.group(2), m.group(3)
 
-              def patch_release_block(m: re.Match) -> str:
-                  block = m.group(0)
-                  block = re.sub(r'signingConfig\s+signingConfigs\.debug\b', 'signingConfig signingConfigs.release', block)
-                  if "signingConfig signingConfigs." not in block:
-                      block = re.sub(r'release\s*\{\s*', 'release {\n            signingConfig signingConfigs.release\n', block, count=1)
-                  return block
+          if "release {" not in body:
+              body = body.rstrip() + release_cfg + "\n"
 
-              s2 = re.sub(
-                  r'buildTypes\s*\{[\s\S]*?\brelease\s*\{[\s\S]*?\n\s*\}[\s\S]*?\n\s*\}',
-                  lambda m: re.sub(r'\brelease\s*\{[\s\S]*?\n\s*\}', patch_release_block, m.group(0), count=1),
-                  s,
-                  count=1
-              )
-              s = s2
-              p.write_text(s, encoding="utf-8")
+          s = s[:m.start()] + head + body + tail + s[m.end():]
 
-          print("OK patched:", p)
+          def fix_release(block):
+              block = re.sub(r'signingConfig\s+signingConfigs\.debug',
+                             'signingConfig signingConfigs.release', block)
+              if "signingConfig signingConfigs.release" not in block:
+                  block = re.sub(r'release\s*\{\s*',
+                                 'release {\n            signingConfig signingConfigs.release\n', block, 1)
+              return block
+
+          s = re.sub(r'release\s*\{[\s\S]*?\n\s*\}', fix_release, s, 1)
+
+          p.write_text(s, encoding="utf-8")
           PY
 
       - name: Build APK + AAB
