@@ -1,4 +1,4 @@
-{
+export default {
   "expo": {
     "name": "MiniStrava",
     "slug": "MiniStrava",
@@ -17,14 +17,15 @@
     "plugins": [
       "expo-router",
       "expo-secure-store",
-       [
+      [
         "expo-build-properties",
         {
           "android": {
             "usesCleartextTraffic": true
           }
         }
-      ]
+      ],
+      "expo-sqlite"
     ],
     "experiments": {
       "typedRoutes": true,
@@ -49,6 +50,9 @@
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0b0d12"
       }
+    },
+    "extra": {
+      "apiBaseUrl": process.env.API_BASE_URL,
     }
   }
 }

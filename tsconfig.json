@@ -4,8 +4,22 @@
     "strict": true,
     "baseUrl": ".",
     "paths": {
-      "@/*": ["*"]
+      "@/*": ["src/*"],
+      "@Core/*": ["src/core/*"],
+      "@UI/*": ["src/ui/*"],
+      "@Domain/*": ["src/domain/*"],
+      "@Infra/*": ["src/infrastructure/*"],
+      "@App/*": ["src/application/*"],
+      "@State/*": ["src/state/*"]
     }
   },
-  "include": ["**/*.ts", "**/*.tsx", ".expo/types/**/*.ts", "expo-env.d.ts", "nativewind-env.d.ts"]
+  "include": [
+    "app/**/*.ts",
+    "app/**/*.tsx",
+    "src/**/*.ts",
+    "src/**/*.tsx",
+    ".expo/types/**/*.ts",
+    "expo-env.d.ts",
+    "nativewind-env.d.ts"
+  ]
 }
