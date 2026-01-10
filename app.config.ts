@@ -46,6 +46,7 @@ export default {
       "supportsTablet": true
     },
     "android": {
+      "package": "pl.mrrgroup.ministrava",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0b0d12"
