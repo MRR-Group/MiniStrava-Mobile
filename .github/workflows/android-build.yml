@@ -1,4 +1,4 @@
-name: Android Release (signed)
+name: Android Release
 
 on:
   workflow_dispatch:
@@ -30,58 +30,11 @@ jobs:
           java-version: 17
           cache: gradle
 
-      - name: Prebuild Android
-        run: npx expo prebuild --platform android --non-interactive
-
       - name: Restore Android keystore
         working-directory: android
         run: |
           mkdir -p app/keystores
           echo "${{ secrets.ANDROID_KEYSTORE_BASE64 }}" | base64 -d > app/keystores/release.jks
-
-      - name: Patch android/app/build.gradle (release signing)
-        run: |
-          python - <<'PY'
-          from pathlib import Path
-          import re
-
-          p = Path("android/app/build.gradle")
-          s = p.read_text(encoding="utf-8")
-
-          release_cfg = """
-              release {
-                  def ksPath = System.getenv("ANDROID_KEYSTORE_PATH") ?: "app/keystores/release.jks"
-                  storeFile file(ksPath)
-                  storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
-                  keyAlias System.getenv("ANDROID_KEY_ALIAS")
-                  keyPassword System.getenv("ANDROID_KEY_PASSWORD")
-              }
-          """
-
-          m = re.search(r'(signingConfigs\s*\{)([\s\S]*?)(\n\s*\}\s*)(?=\n\s*buildTypes\s*\{)', s)
-          if not m:
-              raise SystemExit("signingConfigs not found")
-
-          head, body, tail = m.group(1), m.group(2), m.group(3)
-
-          if "release {" not in body:
-              body = body.rstrip() + release_cfg + "\n"
-
-          s = s[:m.start()] + head + body + tail + s[m.end():]
-
-          def patch_release(match: re.Match) -> str:
-              block = match.group(0)
-              block = re.sub(r'\bsigningConfig\s+signingConfigs\.debug\b',
-                             'signingConfig signingConfigs.release', block)
-              if "signingConfig signingConfigs.release" not in block:
-                  block = re.sub(r'\brelease\s*\{\s*',
-                                 'release {\n            signingConfig signingConfigs.release\n', block, count=1)
-              return block
-
-          s = re.sub(r'\brelease\s*\{[\s\S]*?\n\s*\}', patch_release, s, count=1)
-
-          p.write_text(s, encoding="utf-8")
-          PY
 
       - name: Build APK + AAB
         working-directory: android
@@ -94,34 +47,19 @@ jobs:
           ./gradlew assembleRelease
           ./gradlew bundleRelease
 
-      - name: Read version from Gradle
+      - name: Read version
         id: ver
         run: |
-          python - <<'PY'
-          import re
-          from pathlib import Path
-
-          s = Path("android/app/build.gradle").read_text(encoding="utf-8")
-
-          vn = re.search(r'versionName\s+"([^"]+)"', s)
-          vc = re.search(r'versionCode\s+(\d+)', s)
-
-          if not vn or not vc:
-              raise SystemExit("Couldn't parse versionName/versionCode from android/app/build.gradle")
-
-          versionName = vn.group(1)
-          versionCode = vc.group(1)
-
-          tag = f"v{versionName}+{versionCode}"
-          name = f"{versionName} ({versionCode})"
-
-          print("tag:", tag)
-          with open("${GITHUB_OUTPUT}", "a", encoding="utf-8") as f:
-              f.write(f"tag={tag}\n")
-              f.write(f"name={name}\n")
-              f.write(f"versionName={versionName}\n")
-              f.write(f"versionCode={versionCode}\n")
-          PY
+          node -e "
+          const fs=require('fs');
+          const cfg=JSON.parse(fs.readFileSync('app.json','utf8'));
+          const v=cfg.expo?.version;
+          const vc=cfg.expo?.android?.versionCode;
+          if(!v || !vc) { console.error('Missing expo.version or expo.android.versionCode in app.json'); process.exit(1); }
+          const tag=`v${v}+${vc}`;
+          const name=`${v} (${vc})`;
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, `tag=${tag}\nname=${name}\nversionName=${v}\nversionCode=${vc}\n`);
+          "
 
       - name: Rename outputs (stable names)
         run: |
