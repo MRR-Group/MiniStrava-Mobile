@@ -123,10 +123,10 @@ android {
 
             release {
                 signingConfig project.hasProperty("MYAPP_UPLOAD_STORE_FILE") ? signingConfigs.release : signingConfigs.debug
-                shrinkResources (findProperty('android.enableShrinkResourcesInReleaseBuilds') ?: 'false').toBoolean()
-                minifyEnabled (findProperty('android.enableMinifyInReleaseBuilds') ?: false).toBoolean()
+                shrinkResources = (findProperty('android.enableShrinkResourcesInReleaseBuilds') ?: 'false').toBoolean()
+                minifyEnabled = (findProperty('android.enableMinifyInReleaseBuilds') ?: 'false').toBoolean()
                 proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-                crunchPngs (findProperty('android.enablePngCrunchInReleaseBuilds') ?: 'true').toBoolean()
+                crunchPngs = (findProperty('android.enablePngCrunchInReleaseBuilds') ?: 'true').toBoolean()
             }
         }
     }
