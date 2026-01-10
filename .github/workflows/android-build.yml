@@ -54,16 +54,19 @@ jobs:
       - name: Read version
         id: ver
         run: |
-          node -e "
-          const fs=require('fs');
-          const cfg=JSON.parse(fs.readFileSync('app.json','utf8'));
-          const v=cfg.expo?.version;
-          const vc=cfg.expo?.android?.versionCode;
-          if(!v || !vc) { console.error('Missing expo.version or expo.android.versionCode in app.json'); process.exit(1); }
-          const tag=`v${v}+${vc}`;
-          const name=`${v} (${vc})`;
-          fs.appendFileSync(process.env.GITHUB_OUTPUT, `tag=${tag}\nname=${name}\nversionName=${v}\nversionCode=${vc}\n`);
-          "
+          node -e '
+          const fs = require("fs");
+          const cfg = JSON.parse(fs.readFileSync("app.json","utf8"));
+          const v = cfg.expo && cfg.expo.version;
+          const vc = cfg.expo && cfg.expo.android && cfg.expo.android.versionCode;
+          if(!v || !vc){ console.error("Missing expo.version or expo.android.versionCode in app.json"); process.exit(1); }
+          const tag = "v" + v + "+" + vc;
+          const name = v + " (" + vc + ")";
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, "tag=" + tag + "\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, "name=" + name + "\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, "versionName=" + v + "\n");
+          fs.appendFileSync(process.env.GITHUB_OUTPUT, "versionCode=" + vc + "\n");
+          '
 
       - name: Rename outputs (stable names)
         run: |
