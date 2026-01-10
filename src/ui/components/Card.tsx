@@ -1,11 +1,13 @@
-import { PropsWithChildren } from "react";
+import React, { PropsWithChildren } from "react";
 import { View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 
-export const Card = ({children}: PropsWithChildren) => (
-  <View className="border rounded-custom border-black/5 shadow-custom m-3.5 w-full">
-    <LinearGradient colors={["#141822", "#0f131b"]} style={{borderRadius: 18 }}>
-      {children}
-    </LinearGradient>
-  </View>
-);
+export function Card({ children }: PropsWithChildren) {
+  return (
+    <View className="m-3.5 w-full overflow-hidden rounded-custom border border-white/10 shadow-custom">
+      <LinearGradient colors={["#141822", "#0f131b"]} style={{ borderRadius: 18 }}>
+        {children}
+      </LinearGradient>
+    </View>
+  );
+}

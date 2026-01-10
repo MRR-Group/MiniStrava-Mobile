@@ -10,7 +10,8 @@
       "@infra/*": ["src/infrastructure/*"],
       "@app/*": ["src/application/*"],
       "@state/*": ["src/state/*"],
-      "@/*": ["src/*"]
+      "@/*": ["src/*"],
+      "@/assets/*": ["assets/*"]
     }
   },
   "include": [

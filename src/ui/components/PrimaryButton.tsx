@@ -1,33 +1,43 @@
-import { LinearGradient } from 'expo-linear-gradient';
-import { Text, TouchableOpacity } from 'react-native';
-import { clsx } from 'clsx';
+import React from "react";
+import { Pressable, Text, ActivityIndicator, View } from "react-native";
+import { LinearGradient } from "expo-linear-gradient";
+import clsx from "clsx";
+import { useT } from "@core/i18n/useT";
+import { I18N } from "@core/i18n/keys";
 
-type Props = { 
-  title: string 
-  loading?: boolean
-  onPress?: () => void
+type Props = {
+  title: string;
+  loading?: boolean;
+  onPress?: () => void;
 };
 
-export const PrimaryButton = (({ title, loading, onPress }: Props) => {
+export function PrimaryButton({ title, loading, onPress }: Props) {
+  const { t } = useT();  
+
   return (
-    <TouchableOpacity className={clsx(`rounded-custom transition-transform`, !loading &&  "active:scale-95", loading && "cursor-not-allowed")} disabled={loading} onPress={onPress}>
+    <Pressable
+      disabled={!!loading}
+      onPress={onPress}
+      className={clsx(
+        "rounded-custom overflow-hidden",
+        !loading && "active:scale-[0.98]",
+        loading && "opacity-70"
+      )}
+    >
       <LinearGradient
         dither
         start={{ x: 0.2, y: 1 }}
         end={{ x: 0.8, y: 0 }}
-        colors={[
-          "#7c5cff",
-          "#8668ff",
-          "#6f97ff",
-          "#54e0ff",
-          "#4ffaff",
-        ]}
+        colors={["#7c5cff", "#8668ff", "#6f97ff", "#54e0ff", "#4ffaff"]}
         style={{ borderRadius: 18 }}
       >
-        <Text className="p-4 text-center text-text text-sm font-bold select-none">
-          {loading ? "Loading..." : title}
-        </Text>
+        <View className="flex-row items-center justify-center gap-2 p-4">
+          {loading ? <ActivityIndicator /> : null}
+          <Text className="select-none text-center text-sm font-bold text-text">
+            {loading ? `${t(I18N.common.loading)}...` : title}
+          </Text>
+        </View>
       </LinearGradient>
-    </TouchableOpacity>
+    </Pressable>
   );
-});
+}
