@@ -1,7 +1,7 @@
 import { useMemo } from "react";
 import { useMigrations } from "drizzle-orm/expo-sqlite/migrator";
 import { db } from "./client";
-import migrations from "@/drizzle/migrations"
+import migrations from "../../../drizzle/migrations"
 
 export type DbState =
   | { ready: false; error: null }
