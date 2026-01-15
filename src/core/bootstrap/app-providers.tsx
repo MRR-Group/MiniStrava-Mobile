@@ -7,6 +7,7 @@ import { initI18n } from "@/core/i18n/i18n";
 import { useDb } from "@infra/db/use-db";
 import { ConfirmProvider } from "@ui/confirm/confirm-context";
 import { ensureLocationTaskDefined } from "@infra/device/location-tracker";
+import { registerPushTokenUseCase } from "@/application/usecases/services/push/register-push-token";
 
 const qc = new QueryClient({
   defaultOptions: {
@@ -50,6 +51,13 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
     AuthApi.me()
       .then((u: AuthUser) => useSessionStore.getState().setUser(u))
       .catch(() => useSessionStore.getState().clearSession());
+  }, []);
+
+  useEffect(() => {
+    const state = useSessionStore.getState();
+    if (!state.token) return;
+
+    registerPushTokenUseCase().catch(() => {});
   }, []);
 
   useEffect(() => {
