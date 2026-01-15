@@ -195,6 +195,12 @@ export const I18N = {
       },
       errors: {
         updateFailed: "profile.edit.errors.updateFailed",
+        nameRequired: "profile.edit.errors.nameRequired",
+        nameMin: "profile.edit.errors.nameMin",
+        nameMax: "profile.edit.errors.nameMax",
+        heightInvalid: "profile.edit.errors.heightInvalid",
+        weightInvalid: "profile.edit.errors.weightInvalid",
+        birthInvalid: "profile.edit.errors.birthInvalid",
       },
     },
     export: {

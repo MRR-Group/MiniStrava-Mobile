@@ -128,6 +128,12 @@ export const resources = {
           },
           errors: {
             updateFailed: "Nie udało się zapisać profilu.",
+            nameRequired: "Imię i nazwisko jest wymagane.",
+            nameMin: "Imię i nazwisko musi mieć min. 2 znaki.",
+            nameMax: "Imię i nazwisko może mieć maks. 255 znaków.",
+            heightInvalid: "Wzrost musi być liczbą (cm).",
+            weightInvalid: "Waga musi być liczbą (kg).",
+            birthInvalid: "Wybierz poprawną datę urodzenia.",
           },
         },
         export: {
@@ -412,6 +418,12 @@ export const resources = {
           },
           errors: {
             updateFailed: "Could not save profile.",
+            nameRequired: "Full name is required.",
+            nameMin: "Full name must be at least 2 characters.",
+            nameMax: "Full name must be at most 255 characters.",
+            heightInvalid: "Height must be a number (cm).",
+            weightInvalid: "Weight must be a number (kg).",
+            birthInvalid: "Choose a valid birth date.",
           },
         },
         export: {
