@@ -11,6 +11,7 @@
       "@app/*": ["src/application/*"],
       "@state/*": ["src/state/*"],
       "@/*": ["src/*"],
+      "@/drizzle/*": ["drizzle/*"],
       "@/assets/*": ["assets/*"]
     }
   },
@@ -19,8 +20,10 @@
     "app/**/*.tsx",
     "src/**/*.ts",
     "src/**/*.tsx",
+    "drizzle/**/*.ts",
     ".expo/types/**/*.ts",
     "expo-env.d.ts",
-    "nativewind-env.d.ts"
+    "nativewind-env.d.ts",
+    "types.d.ts",
   ]
 }

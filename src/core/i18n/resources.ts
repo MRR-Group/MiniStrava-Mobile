@@ -7,6 +7,122 @@ export const resources = {
         resendCode: "Wyślij kod ponownie",
         loading: "Ładowanie"
       },
+      record: {
+        title: "Dzisiejszy trening",
+        types: { run: "Bieg", bike: "Rower", walk: "Spacer", other: "Inna" },
+        stats: { time: "Czas", distance: "Dystans", pace: "Tempo" },
+        mapPlaceholder: "[ podgląd trasy / mapa GPS ]",
+        notification: "Śledzenie trasy",
+
+        actions: {
+          start: "Start",
+          stop: "Stop",
+          resume: "Wznów",
+          save: "Zapisz",
+          discard: "Porzuć",
+          manual: "Wprowadź aktywność",
+          back: "Wróć",
+        },
+
+        confirm: {
+          exitTitle: "Wyjść bez zapisu?",
+          exitDesc: "Niezapisana aktywność zostanie utracona.",
+          exitConfirm: "Wyjdź",
+          exitCancel: "Zostań",
+
+          discardTitle: "Porzucić aktywność?",
+          discardDesc: "Aktywność nie zostanie zapisana.",
+          discardConfirm: "Porzuć",
+          discardCancel: "Anuluj",
+        },
+        save: {
+          title: "Zapisz aktywność",
+
+          fields: {
+            title: "Nazwa",
+            notes: "Notatka",
+            titlePlaceholder: "np. Poranny bieg",
+            notesPlaceholder: "Opcjonalnie...",
+            distance: "Dystans (km)",
+            duration: "Czas (minuty)",
+            date: "Data",
+            time: "Godzina",
+          },
+
+          errors: {
+            titleRequired: "Pole nie może być puste",
+            titleMin: "Za krótki tytuł",
+            titleMax: "Za długi tytuł",
+            distanceRequired: "Podaj dystans",
+            durationRequired: "Podaj czas trwania",
+            dateRequired: "Podaj datę",
+            timeRequired: "Podaj godzinę",
+          },
+
+          actions: {
+            save: "Zapisz",
+            back: "Wróć",
+            discard: "Porzuć",
+          },
+
+          photo: {
+            label: "Zdjęcie",
+            add: "Dodaj zdjęcie",
+            change: "Zmień zdjęcie",
+            remove: "Usuń",
+            permission: "Brak dostępu do galerii.",
+          },
+
+          confirm: {
+            leaveTitle: "Wyjść bez zapisu?",
+            leaveDesc: "Wpisane dane zostaną utracone.",
+            leaveConfirm: "Wyjdź",
+            leaveCancel: "Zostań",
+
+            discardTitle: "Porzucić aktywność?",
+            discardDesc: "Aktywność nie zostanie zapisana.",
+            discardConfirm: "Porzuć",
+            discardCancel: "Anuluj",
+          },
+        },
+      },
+      profile: {
+        title: "Twój profil",
+        greeting: "Cześć",
+        memberSince: "Z nami od",
+        lastActivity: "Ostatnia aktywność",
+        placeholders: { noActivity: "Brak zapisanych aktywności" },
+        metrics: {
+          activities: "Aktywności",
+          distance: "Łączny dystans",
+          time: "Czas w ruchu",
+          pace: "Śr. tempo",
+        },
+        details: {
+          email: "E-mail",
+          name: "Imię i nazwisko",
+          height: "Wzrost",
+          weight: "Waga",
+          birth: "Data urodzenia",
+        },
+        actions: {
+          logout: "Wyloguj się",
+          refresh: "Odśwież",
+        },
+      },
+      activities: {
+        title: "Aktywności",
+        listEmpty: "Brak aktywności",
+        status: {
+          synced: "Zsynchronizowana",
+          local: "Lokalnie (oczekuje na sync)",
+        },
+        fields: {
+          distance: "Dystans",
+          duration: "Czas",
+          date: "Data",
+        },
+      },
       auth: {
         email: "E-mail",
         password: "Hasło",
@@ -80,6 +196,122 @@ export const resources = {
         backToLogin: "Back to login",
         resendCode: "Resend code",
         loading: "Loading"
+      },
+      record: {
+        title: "Today's workout",
+        notification: "Recording activity",
+        types: { run: "Run", bike: "Bike", walk: "Walk", other: "Other" },
+        stats: { time: "Time", distance: "Distance", pace: "Pace" },
+        mapPlaceholder: "[ route preview / GPS map ]",
+
+        actions: {
+          start: "Start",
+          stop: "Stop",
+          resume: "Resume",
+          save: "Save",
+          discard: "Discard",
+          manual: "Add activity",
+          back: "Back",
+        },
+
+        confirm: {
+          exitTitle: "Leave without saving?",
+          exitDesc: "Your unsaved activity will be lost.",
+          exitConfirm: "Leave",
+          exitCancel: "Stay",
+
+          discardTitle: "Discard activity?",
+          discardDesc: "This activity will not be saved.",
+          discardConfirm: "Discard",
+          discardCancel: "Cancel",
+        },
+        save: {
+          title: "Save activity",
+
+          fields: {
+            title: "Title",
+            notes: "Notes",
+            titlePlaceholder: "e.g. Morning run",
+            notesPlaceholder: "Optional...",
+            distance: "Distance (km)",
+            duration: "Duration (minutes)",
+            date: "Date",
+            time: "Time",
+          },
+
+          errors: {
+            titleRequired: "Field cannot be empty",
+            titleMin: "Too short",
+            titleMax: "Too long",
+            distanceRequired: "Distance is required",
+            durationRequired: "Duration is required",
+            dateRequired: "Date is required",
+            timeRequired: "Time is required",
+          },
+
+          photo: {
+            label: "Photo",
+            add: "Add photo",
+            change: "Change photo",
+            remove: "Remove",
+            permission: "No access to photo library.",
+          },
+
+          actions: {
+            save: "Save",
+            back: "Back",
+            discard: "Discard",
+          },
+
+          confirm: {
+            leaveTitle: "Leave without saving?",
+            leaveDesc: "Entered data will be lost.",
+            leaveConfirm: "Leave",
+            leaveCancel: "Stay",
+
+            discardTitle: "Discard activity?",
+            discardDesc: "This activity will not be saved.",
+            discardConfirm: "Discard",
+            discardCancel: "Cancel",
+          },
+        },
+      },
+      profile: {
+        title: "Your profile",
+        greeting: "Hey",
+        memberSince: "Member since",
+        lastActivity: "Last activity",
+        placeholders: { noActivity: "No activities yet" },
+        metrics: {
+          activities: "Activities",
+          distance: "Total distance",
+          time: "Moving time",
+          pace: "Avg pace",
+        },
+        details: {
+          email: "Email",
+          name: "Full name",
+          height: "Height",
+          weight: "Weight",
+          birth: "Birth date",
+        },
+        actions: {
+          logout: "Sign out",
+          refresh: "Refresh",
+        },
+      },
+      activities: {
+        title: "Activities",
+        listEmpty: "No activities yet",
+        status: {
+          synced: "Synced",
+          local: "Local (pending sync)",
+        },
+        fields: {
+          distance: "Distance",
+          duration: "Time",
+          date: "Date",
+        },
       },
       auth: {
         email: "Email",

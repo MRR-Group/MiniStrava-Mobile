@@ -2,6 +2,7 @@ import { create } from "zustand";
 import * as SecureStore from "expo-secure-store";
 
 const TOKEN_KEY = "auth.token";
+const USER_KEY = "auth.user";
 
 export type AuthUser = {
   id: number;
@@ -26,7 +27,7 @@ type SessionState = {
 
   hydrate: () => Promise<void>;
   setToken: (token: string) => Promise<void>;
-  setUser: (user: AuthUser) => void;
+  setUser: (user: AuthUser) => Promise<void>;
   clearSession: () => Promise<void>;
 };
 
@@ -36,8 +37,13 @@ export const useSessionStore = create<SessionState>((set) => ({
   hydrated: false,
 
   hydrate: async () => {
-    const token = await SecureStore.getItemAsync(TOKEN_KEY);
-    set({ token: token ?? null, hydrated: true });
+    const [token, userJson] = await Promise.all([
+      SecureStore.getItemAsync(TOKEN_KEY),
+      SecureStore.getItemAsync(USER_KEY),
+    ]);
+
+    const user = userJson ? (JSON.parse(userJson) as AuthUser) : null;
+    set({ token: token ?? null, user, hydrated: true });
   },
 
   setToken: async (token) => {
@@ -45,10 +51,16 @@ export const useSessionStore = create<SessionState>((set) => ({
     set({ token });
   },
 
-  setUser: (user) => set({ user }),
+  setUser: async (user) => {
+    await SecureStore.setItemAsync(USER_KEY, JSON.stringify(user));
+    set({ user });
+  },
 
   clearSession: async () => {
-    await SecureStore.deleteItemAsync(TOKEN_KEY);
+    await Promise.all([
+      SecureStore.deleteItemAsync(TOKEN_KEY),
+      SecureStore.deleteItemAsync(USER_KEY),
+    ]);
     set({ token: null, user: null });
   },
 }));

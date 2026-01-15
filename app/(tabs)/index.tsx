@@ -1,5 +1,5 @@
-import { HomeScreen } from "@/ui/screens/tabs/HomeScreen";
+import { RecordScreen } from "@ui/screens/record/RecordScreen";
 
 export default function IndexRoute() {
-  return <HomeScreen />;
+  return <RecordScreen />;
 }

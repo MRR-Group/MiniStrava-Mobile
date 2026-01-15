@@ -79,7 +79,7 @@ export function RegisterScreen() {
                 control={control}
                 name="name"
                 label={t(I18N.auth.register.name)}
-                placeholder="KacperekUWU"
+                placeholder="Adam"
                 errors={errors}
                 rules={{
                   required: t(I18N.auth.register.errors.nameRequired),
