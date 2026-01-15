@@ -26,6 +26,7 @@ export function ActivitiesScreen() {
   const [typeFilter, setTypeFilter] = useState<TypeFilter>("all");
   const [dateFilter, setDateFilter] = useState<DateFilter>("all");
   const [sort, setSort] = useState<SortOption>("date_desc");
+  const [filtersOpen, setFiltersOpen] = useState(false);
 
   const load = async () => {
     try {
@@ -104,52 +105,58 @@ export function ActivitiesScreen() {
             <Text className="text-2xl font-bold text-text">{t(I18N.activities.title)}</Text>
             <View className="flex-row gap-2">
               <Button title={syncing ? t(I18N.activities.actions.syncing) : t(I18N.activities.actions.sync)} onPress={handleSyncPress} />
-            </View>
-          </View>
-
-          <View className="gap-3 px-2">
-            <View className="gap-2">
-              <Text className="text-xs text-muted">{t(I18N.activities.filters.type)}</Text>
-              <Segmented<TypeFilter>
-                value={typeFilter}
-                onChange={setTypeFilter}
-                items={[
-                  { key: "all", label: t(I18N.activities.filters.typeAll) },
-                  { key: "run", label: t(I18N.activities.filters.typeRun) },
-                  { key: "ride", label: t(I18N.activities.filters.typeRide) },
-                  { key: "walk", label: t(I18N.activities.filters.typeWalk) },
-                  { key: "other", label: t(I18N.activities.filters.typeOther) },
-                ]}
-              />
-            </View>
-
-            <View className="gap-2">
-              <Text className="text-xs text-muted">{t(I18N.activities.filters.date)}</Text>
-              <Segmented<DateFilter>
-                value={dateFilter}
-                onChange={setDateFilter}
-                items={[
-                  { key: "all", label: t(I18N.activities.filters.dateAll) },
-                  { key: "7d", label: t(I18N.activities.filters.date7d) },
-                  { key: "30d", label: t(I18N.activities.filters.date30d) },
-                ]}
-              />
-            </View>
-
-            <View className="gap-2">
-              <Text className="text-xs text-muted">{t(I18N.activities.filters.sort)}</Text>
-              <Segmented<SortOption>
-                value={sort}
-                onChange={setSort}
-                items={[
-                  { key: "date_desc", label: t(I18N.activities.filters.sortDateDesc) },
-                  { key: "date_asc", label: t(I18N.activities.filters.sortDateAsc) },
-                  { key: "distance_desc", label: t(I18N.activities.filters.sortDistanceDesc) },
-                  { key: "distance_asc", label: t(I18N.activities.filters.sortDistanceAsc) },
-                ]}
+              <Button
+                title={filtersOpen ? t(I18N.activities.filters.toggle.hide) : t(I18N.activities.filters.toggle.show)}
+                onPress={() => setFiltersOpen((v) => !v)}
               />
             </View>
           </View>
+
+          {filtersOpen ? (
+            <View className="gap-3 px-2">
+              <View className="gap-2">
+                <Text className="text-xs text-muted">{t(I18N.activities.filters.type)}</Text>
+                <Segmented<TypeFilter>
+                  value={typeFilter}
+                  onChange={setTypeFilter}
+                  items={[
+                    { key: "all", label: t(I18N.activities.filters.typeAll) },
+                    { key: "run", label: t(I18N.activities.filters.typeRun) },
+                    { key: "ride", label: t(I18N.activities.filters.typeRide) },
+                    { key: "walk", label: t(I18N.activities.filters.typeWalk) },
+                    { key: "other", label: t(I18N.activities.filters.typeOther) },
+                  ]}
+                />
+              </View>
+
+              <View className="gap-2">
+                <Text className="text-xs text-muted">{t(I18N.activities.filters.date)}</Text>
+                <Segmented<DateFilter>
+                  value={dateFilter}
+                  onChange={setDateFilter}
+                  items={[
+                    { key: "all", label: t(I18N.activities.filters.dateAll) },
+                    { key: "7d", label: t(I18N.activities.filters.date7d) },
+                    { key: "30d", label: t(I18N.activities.filters.date30d) },
+                  ]}
+                />
+              </View>
+
+              <View className="gap-2">
+                <Text className="text-xs text-muted">{t(I18N.activities.filters.sort)}</Text>
+                <Segmented<SortOption>
+                  value={sort}
+                  onChange={setSort}
+                  items={[
+                    { key: "date_desc", label: t(I18N.activities.filters.sortDateDesc) },
+                    { key: "date_asc", label: t(I18N.activities.filters.sortDateAsc) },
+                    { key: "distance_desc", label: t(I18N.activities.filters.sortDistanceDesc) },
+                    { key: "distance_asc", label: t(I18N.activities.filters.sortDistanceAsc) },
+                  ]}
+                />
+              </View>
+            </View>
+          ) : null}
 
           <FlatList
             data={filteredAndSorted}

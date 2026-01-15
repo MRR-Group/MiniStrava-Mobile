@@ -164,6 +164,10 @@ export const resources = {
           type: "Typ",
           date: "Zakres dat",
           sort: "Sortuj",
+          toggle: {
+            show: "Pokaż filtry",
+            hide: "Ukryj filtry",
+          },
           typeAll: "Wszystkie",
           typeRun: "Bieg",
           typeRide: "Rower",
@@ -444,6 +448,10 @@ export const resources = {
           type: "Type",
           date: "Date range",
           sort: "Sort",
+          toggle: {
+            show: "Show filters",
+            hide: "Hide filters",
+          },
           typeAll: "All",
           typeRun: "Run",
           typeRide: "Ride",

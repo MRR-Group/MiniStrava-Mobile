@@ -231,6 +231,10 @@ export const I18N = {
       type: "activities.filters.type",
       date: "activities.filters.date",
       sort: "activities.filters.sort",
+      toggle: {
+        show: "activities.filters.toggle.show",
+        hide: "activities.filters.toggle.hide",
+      },
       typeAll: "activities.filters.typeAll",
       typeRun: "activities.filters.typeRun",
       typeRide: "activities.filters.typeRide",

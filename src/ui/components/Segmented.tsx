@@ -26,7 +26,7 @@ export function Segmented<T extends string>({ items, value, onChange }: Props<T>
               active ? "bg-white/10" : "bg-transparent"
             )}
           >
-            <Text className={clsx("text-xs", active ? "text-text font-bold" : "text-muted")}>
+            <Text className={clsx("text-[9px]", active ? "text-text font-bold" : "text-muted")}>
               {it.label}
             </Text>
           </Pressable>
