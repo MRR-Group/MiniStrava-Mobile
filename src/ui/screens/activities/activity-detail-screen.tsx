@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState, useEffect } from "react";
-import { Alert, Image, Text, View } from "react-native";
+import { Alert, Image, ScrollView, Text, View } from "react-native";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import dayjs from "dayjs";
 import MapView, { Marker, Polyline, Region } from "react-native-maps";
@@ -272,22 +272,22 @@ export function ActivityDetailScreen() {
                     <Button title={deleting ? t(I18N.activities.detail.deleting) : t(I18N.activities.detail.delete)} onPress={handleDelete} disabled={deleting} />
                   </View>
                 </View>
-
+                  
                 <Card>
                   <View className="gap-3 p-5">
-                    <View className="flex-row items-center justify-between">
                       <Text className="text-lg font-semibold text-text">{t(I18N.activities.detail.aiSummary.title)}</Text>
                       <Button
                         title={aiLoading ? t(I18N.activities.detail.aiSummary.loading) : t(I18N.activities.detail.aiSummary.cta)}
                         onPress={handleAiSummary}
                         disabled={aiLoading}
                       />
-                    </View>
 
-                    {aiSummary ? (
-                      <Text className="text-base leading-6 text-text">{aiSummary}</Text>
-                    ) : (
-                      <Text className="text-sm text-muted">{t(I18N.activities.detail.aiSummary.loading)}</Text>
+                    {aiSummary && (
+                      <ScrollView className="max-h-64" nestedScrollEnabled>
+                        <Text className="text-base leading-6 text-text" selectable>
+                          {aiSummary}
+                        </Text>
+                      </ScrollView>
                     )}
                   </View>
                 </Card>
