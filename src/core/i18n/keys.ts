@@ -182,6 +182,21 @@ export const I18N = {
         en: "profile.language.options.en",
       },
     },
+    edit: {
+      title: "profile.edit.title",
+      offline: "profile.edit.offline",
+      fields: {
+        firstName: "profile.edit.fields.firstName",
+        lastName: "profile.edit.fields.lastName",
+      },
+      actions: {
+        save: "profile.edit.actions.save",
+        cancel: "profile.edit.actions.cancel",
+      },
+      errors: {
+        updateFailed: "profile.edit.errors.updateFailed",
+      },
+    },
     actions: {
       logout: "profile.actions.logout",
       refresh: "profile.actions.refresh",
@@ -257,6 +272,7 @@ export const I18N = {
     backToLogin: "common.backToLogin",
     resendCode: "common.resendCode",
     loading: "common.loading",
+    offline: "common.offline",  
   },
 } as const;
 

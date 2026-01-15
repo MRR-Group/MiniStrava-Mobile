@@ -52,8 +52,9 @@ export const AuthApi = {
   },
 
   async me(): Promise<AuthUser> {
-    const { data } = await api.get<AuthUser>("/profile");
-    
-    return data;
+    const { data } = await api.get<AuthUser | { data: AuthUser }>("/profile");
+
+    const maybeWrapped = (data as any)?.data;
+    return (maybeWrapped ?? data) as AuthUser;
   },
 };

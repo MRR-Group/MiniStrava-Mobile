@@ -18,6 +18,7 @@ import { PrimaryButton } from "@/ui/components/primary-button";
 import { AuthApi } from "@/infrastructure/api/auth.api";
 import { getCurrentLanguage, setAppLanguage } from "@/core/i18n/i18n";
 import { Segmented } from "@ui/components/segmented";
+import { useOnline } from "@/ui/hooks/use-online";
 
 function formatDistance(meters: number) {
   const km = meters / 1000;
@@ -87,6 +88,7 @@ export function ProfileScreen() {
   const user = useSessionStore((s) => s.user);
   const setUser = useSessionStore((s) => s.setUser);
   const [lang, setLang] = useState<"pl" | "en">(getCurrentLanguage());
+  const online = useOnline();
 
   const { data: summary, refetch, isFetching } = useQuery({
     queryKey: ["profile-summary"],
@@ -105,9 +107,20 @@ export function ProfileScreen() {
 
   useEffect(() => {
     if (me) {
+      console.log("[Profile] fetched me", me);
       void setUser(me);
     }
   }, [me, setUser]);
+
+  useEffect(() => {
+    console.log("[Profile] store user", user);
+  }, [user]);
+
+  useEffect(() => {
+    if (summary) {
+      console.log("[Profile] summary", summary);
+    }
+  }, [summary]);
 
   const memberSince = useMemo(() => {
     if (!user?.created_at) return "";
@@ -151,34 +164,22 @@ export function ProfileScreen() {
         <View className="flex-1 items-center justify-center py-6">
           <Card>
             <View className="gap-4 p-5">
-              <Text className="text-sm text-muted">{t(I18N.profile.greeting)}</Text>
               <View className="flex-row items-center gap-4">
-                {user?.avatar ? (
-                  <Image
-                    source={{ uri: user.avatar }}
-                    className="h-16 w-16 rounded-2xl border border-white/10 bg-white/10"
-                  />
-                ) : (
-                  <View className="h-16 w-16 items-center justify-center rounded-2xl border border-white/10 bg-white/10">
-                    <Text className="text-lg font-bold text-text">{avatarInitials || "?"}</Text>
-                  </View>
-                )}
-
                 <View className="flex-1">
                   <Text className="text-2xl font-bold text-text">{user?.name ?? "-"}</Text>
                   <Text className="text-sm text-muted">{user?.email ?? ""}</Text>
 
                   {memberSince ? (
                     <View className="mt-2 self-start rounded-full border border-white/10 bg-white/5 px-3 py-1">
-                      <Text className="text-[11px] text-muted">
+                      <Text className="text-[11px] text-muted text-center">
                         {t(I18N.profile.memberSince)} {memberSince}
                       </Text>
                     </View>
                   ) : null}
                 </View>
 
-                <View className="items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
-                  <Text className="text-xs text-muted">{t(I18N.profile.metrics.activities)}</Text>
+                <View className="h-20 w-20 items-center justify-center rounded-2xl border border-white/10 bg-white/5 px-3 py-2">
+                  <Text className="text-[9px] text-muted">{t(I18N.profile.metrics.activities)}</Text>
                   <Text className="text-lg font-bold text-text">{summary?.totalActivities ?? 0}</Text>
                 </View>
               </View>
@@ -197,6 +198,21 @@ export function ProfileScreen() {
                   }
                   onPress={onRefresh}
                 />
+              </View>
+
+              <View className="flex-row gap-3">
+                {online && (
+                  <View className="flex-1">
+                    <Button
+                      title={t(I18N.profile.edit.title)}
+                      onPress={() => router.push("/(tabs)/profile/edit")}
+                      disabled={!online}
+                    />
+                  </View>
+                )}
+                {!online && (
+                  <Text className="w-full text-center text-xs rounded-xl border border-white/15 bg-transparent p-3 text-red-400 self-center">{t(I18N.profile.edit.offline)}</Text>
+                )}
               </View>
 
               <View className="gap-3">
