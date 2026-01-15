@@ -7,7 +7,7 @@ export async function login(email: string, password: string) {
   await useSessionStore.getState().setToken(token);
 
   const user = await AuthApi.me();
-  useSessionStore.getState().setUser(user);
+  await useSessionStore.getState().setUser(user);
 
   return user;
 }

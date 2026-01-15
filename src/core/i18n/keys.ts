@@ -63,6 +63,162 @@ export const I18N = {
       passwordRequired: "auth.errors.passwordRequired",
     },
   },
+  record: {
+    title: "record.title",
+    notification: "record.notification",
+    types: {
+      run: "record.types.run",
+      bike: "record.types.bike",
+      walk: "record.types.walk",
+      other: "record.types.other",
+    },
+    stats: {
+      time: "record.stats.time",
+      distance: "record.stats.distance",
+      pace: "record.stats.pace",
+    },
+    mapPlaceholder: "record.mapPlaceholder",
+    start: "record.start",
+    stop: "record.stop",
+    manual: "record.manual",
+    confirm: {
+      exitTitle: "record.confirm.exitTitle",
+      exitDesc: "record.confirm.exitDesc",
+      exitConfirm: "record.confirm.exitConfirm",
+      exitCancel: "record.confirm.exitCancel",
+
+      discardTitle: "record.confirm.discardTitle",
+      discardDesc: "record.confirm.discardDesc",
+      discardConfirm: "record.confirm.discardConfirm",
+      discardCancel: "record.confirm.discardCancel",
+    },
+    actions: {
+      start: "Start",
+      stop: "Stop",
+      resume: "Resume",
+      save: "Save",
+      discard: "Discard",
+      manual: "Add activity",
+      back: "Back",
+    },
+    save: {
+      title: "record.save.title",
+      
+      photo: {
+        label: "record.save.photo.label",
+        add: "record.save.photo.add",
+        change: "record.save.photo.change",
+        remove: "record.save.photo.remove",
+        permission: "record.save.photo.permission",
+      },
+
+      fields: {
+        title: "record.save.fields.title",
+        notes: "record.save.fields.notes",
+        titlePlaceholder: "record.save.fields.titlePlaceholder",
+        notesPlaceholder: "record.save.fields.notesPlaceholder",
+          distance: "record.save.fields.distance",
+          duration: "record.save.fields.duration",
+          date: "record.save.fields.date",
+          time: "record.save.fields.time",
+      },
+
+        errors: {
+          titleRequired: "record.save.errors.titleRequired",
+          titleMin: "record.save.errors.titleMin",
+          titleMax: "record.save.errors.titleMax",
+          distanceRequired: "record.save.errors.distanceRequired",
+           distanceMin: "record.save.errors.distanceMin",
+          durationRequired: "record.save.errors.durationRequired",
+          dateRequired: "record.save.errors.dateRequired",
+          timeRequired: "record.save.errors.timeRequired",
+        },
+
+      actions: {
+        save: "record.save.actions.save",
+        back: "record.save.actions.back",
+        discard: "record.save.actions.discard",
+      },
+
+      confirm: {
+        leaveTitle: "record.save.confirm.leaveTitle",
+        leaveDesc: "record.save.confirm.leaveDesc",
+        leaveConfirm: "record.save.confirm.leaveConfirm",
+        leaveCancel: "record.save.confirm.leaveCancel",
+
+        discardTitle: "record.save.confirm.discardTitle",
+        discardDesc: "record.save.confirm.discardDesc",
+        discardConfirm: "record.save.confirm.discardConfirm",
+        discardCancel: "record.save.confirm.discardCancel",
+      },
+    },
+  },
+  profile: {
+    title: "profile.title",
+    greeting: "profile.greeting",
+    memberSince: "profile.memberSince",
+    lastActivity: "profile.lastActivity",
+    placeholders: {
+      noActivity: "profile.placeholders.noActivity",
+    },
+    metrics: {
+      activities: "profile.metrics.activities",
+      distance: "profile.metrics.distance",
+      time: "profile.metrics.time",
+      pace: "profile.metrics.pace",
+    },
+    details: {
+      email: "profile.details.email",
+      name: "profile.details.name",
+      height: "profile.details.height",
+      weight: "profile.details.weight",
+      birth: "profile.details.birth",
+    },
+    actions: {
+      logout: "profile.actions.logout",
+      refresh: "profile.actions.refresh",
+    },
+  },
+  activities: {
+    title: "activities.title",
+    listEmpty: "activities.listEmpty",
+    status: {
+      synced: "activities.status.synced",
+      local: "activities.status.local",
+    },
+    actions: {
+      sync: "activities.actions.sync",
+      syncing: "activities.actions.syncing",
+    },
+    fields: {
+      distance: "activities.fields.distance",
+      duration: "activities.fields.duration",
+      date: "activities.fields.date",
+    },
+    detail: {
+      title: "activities.detail.title",
+      back: "activities.detail.back",
+      notFound: "activities.detail.notFound",
+      edit: "activities.detail.edit",
+      delete: "activities.detail.delete",
+      deleting: "activities.detail.deleting",
+      pace: "activities.detail.pace",
+      confirm: {
+        deleteTitle: "activities.detail.confirm.deleteTitle",
+        deleteDesc: "activities.detail.confirm.deleteDesc",
+        deleteConfirm: "activities.detail.confirm.deleteConfirm",
+        deleteCancel: "activities.detail.confirm.deleteCancel",
+      },
+    },
+    edit: {
+      title: "activities.edit.title",
+      actions: {
+        save: "activities.edit.actions.save",
+        saving: "activities.edit.actions.saving",
+        cancel: "activities.edit.actions.cancel",
+      },
+    },
+  },
   common: {
     back: "common.back",
     backToLogin: "common.backToLogin",

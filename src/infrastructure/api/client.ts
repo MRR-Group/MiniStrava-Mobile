@@ -18,3 +18,14 @@ api.interceptors.request.use((config) => {
   }
   return config;
 });
+
+api.interceptors.response.use(
+  (response) => response,
+  async (error) => {
+    const status = error?.response?.status;
+    if (status === 401) {
+      await useSessionStore.getState().clearSession();
+    }
+    return Promise.reject(error);
+  }
+);

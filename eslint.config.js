@@ -1,20 +1,22 @@
 /* eslint-env node */
 const { defineConfig } = require("eslint/config");
 const expoConfig = require("eslint-config-expo/flat");
-
-const importPlugin = require("eslint-plugin-import");
+const reactNativePlugin = require("eslint-plugin-react-native");
 
 module.exports = defineConfig([
-  expoConfig,
-
+  ...expoConfig,
   {
     ignores: ["dist/*"],
   },
 
   {
-    plugins: {
-      import: importPlugin,
+    plugins: { "react-native": reactNativePlugin },
+    rules: {
+      "react-native/no-raw-text": "error",
     },
+  },
+
+  {
     settings: {
       "import/resolver": {
         typescript: {
@@ -25,11 +27,6 @@ module.exports = defineConfig([
     },
     rules: {
       "import/no-unresolved": "error",
-    },
-  },
-
-  {
-    rules: {
       "react/display-name": "off",
     },
   },

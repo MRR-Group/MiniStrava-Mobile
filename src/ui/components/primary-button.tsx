@@ -2,7 +2,7 @@ import React from "react";
 import { Pressable, Text, ActivityIndicator, View } from "react-native";
 import { LinearGradient } from "expo-linear-gradient";
 import clsx from "clsx";
-import { useT } from "@core/i18n/useT";
+import { useT } from "@core/i18n/use-t";
 import { I18N } from "@core/i18n/keys";
 
 type Props = {

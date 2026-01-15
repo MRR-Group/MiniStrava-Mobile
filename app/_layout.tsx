@@ -1,5 +1,5 @@
 import { Stack } from "expo-router";
-import { AppProviders } from "@/core/bootstrap/AppProviders";
+import { AppProviders } from "@/core/bootstrap/app-providers";
 import "../global.css";
 
 export default function RootLayout() {

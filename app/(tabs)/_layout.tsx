@@ -36,6 +36,26 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
+        name="record"
+        options={{
+          title: "Nagrywaj",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="play-circle" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
+        name="activities"
+        options={{
+          title: "Aktywności",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="list" size={size} color={color} />
+          ),
+        }}
+      />
+
+      <Tabs.Screen
         name="profile"
         options={{
           title: "Profil",

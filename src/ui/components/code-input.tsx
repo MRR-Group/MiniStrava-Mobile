@@ -45,7 +45,9 @@ export function CodeInput<T extends FieldValues>({
           const chars = code.padEnd(6, "").slice(0, 6).split("");
 
           const setChar = (index: number, char: string) => {
-            if (!/^\d?$/.test(char)) return;
+            if (!/^\d?$/.test(char)) {
+              return;
+            }
 
             const next = chars.slice();
             next[index] = char;
@@ -59,7 +61,9 @@ export function CodeInput<T extends FieldValues>({
           };
 
           const onKey = (index: number, key: string) => {
-            if (key !== "Backspace") return;
+            if (key !== "Backspace") {
+              return;
+            }
 
             if (chars[index]) {
               setChar(index, "");
