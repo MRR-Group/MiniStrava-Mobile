@@ -93,11 +93,10 @@ android {
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
         versionCode 1
-        versionName "1.0.0"
+        versionName "1.0.1"
 
         buildConfigField "String", "REACT_NATIVE_RELEASE_LEVEL", "\"${findProperty('reactNativeReleaseLevel') ?: 'stable'}\""
     }
-    android {
         signingConfigs {
             debug {
                 storeFile file('debug.keystore')
@@ -115,19 +114,20 @@ android {
                 }
             }
         }
-
-        buildTypes {
-            debug {
-                signingConfig signingConfigs.debug
-            }
-
-            release {
-                signingConfig project.hasProperty("MYAPP_UPLOAD_STORE_FILE") ? signingConfigs.release : signingConfigs.debug
-                shrinkResources = (findProperty('android.enableShrinkResourcesInReleaseBuilds') ?: 'false').toBoolean()
-                minifyEnabled = (findProperty('android.enableMinifyInReleaseBuilds') ?: 'false').toBoolean()
-                proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
-                crunchPngs = (findProperty('android.enablePngCrunchInReleaseBuilds') ?: 'true').toBoolean()
-            }
+    buildTypes {
+        debug {
+            signingConfig signingConfigs.debug
+        }
+        release {
+            // Caution! In production, you need to generate your own keystore file.
+            // see https://reactnative.dev/docs/signed-apk-android.
+            signingConfig signingConfigs.debug
+            def enableShrinkResources = findProperty('android.enableShrinkResourcesInReleaseBuilds') ?: 'false'
+            shrinkResources enableShrinkResources.toBoolean()
+            minifyEnabled enableMinifyInReleaseBuilds
+            proguardFiles getDefaultProguardFile("proguard-android.txt"), "proguard-rules.pro"
+            def enablePngCrunchInRelease = findProperty('android.enablePngCrunchInReleaseBuilds') ?: 'true'
+            crunchPngs enablePngCrunchInRelease.toBoolean()
         }
     }
     packagingOptions {
