@@ -195,6 +195,12 @@ export const I18N = {
       },
       errors: {
         updateFailed: "profile.edit.errors.updateFailed",
+        nameRequired: "profile.edit.errors.nameRequired",
+        nameMin: "profile.edit.errors.nameMin",
+        nameMax: "profile.edit.errors.nameMax",
+        heightInvalid: "profile.edit.errors.heightInvalid",
+        weightInvalid: "profile.edit.errors.weightInvalid",
+        birthInvalid: "profile.edit.errors.birthInvalid",
       },
     },
     export: {
@@ -231,6 +237,10 @@ export const I18N = {
       type: "activities.filters.type",
       date: "activities.filters.date",
       sort: "activities.filters.sort",
+      toggle: {
+        show: "activities.filters.toggle.show",
+        hide: "activities.filters.toggle.hide",
+      },
       typeAll: "activities.filters.typeAll",
       typeRun: "activities.filters.typeRun",
       typeRide: "activities.filters.typeRide",
@@ -257,6 +267,13 @@ export const I18N = {
       delete: "activities.detail.delete",
       deleting: "activities.detail.deleting",
       pace: "activities.detail.pace",
+      aiSummary: {
+        title: "activities.detail.aiSummary.title",
+        cta: "activities.detail.aiSummary.cta",
+        loading: "activities.detail.aiSummary.loading",
+        premiumRequired: "activities.detail.aiSummary.premiumRequired",
+        error: "activities.detail.aiSummary.error",
+      },
       confirm: {
         deleteTitle: "activities.detail.confirm.deleteTitle",
         deleteDesc: "activities.detail.confirm.deleteDesc",

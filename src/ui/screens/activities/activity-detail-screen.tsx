@@ -1,5 +1,5 @@
 import React, { useCallback, useMemo, useRef, useState, useEffect } from "react";
-import { Image, Text, View } from "react-native";
+import { Alert, Image, ScrollView, Text, View } from "react-native";
 import { router, useFocusEffect, useLocalSearchParams } from "expo-router";
 import dayjs from "dayjs";
 import MapView, { Marker, Polyline, Region } from "react-native-maps";
@@ -7,7 +7,9 @@ import MapView, { Marker, Polyline, Region } from "react-native-maps";
 import { getActivityUseCase } from "@app/usecases/activities/get-activity";
 import { deleteActivityUseCase } from "@app/usecases/activities/delete-activity";
 import { getActivityPointsUseCase } from "@app/usecases/activities/get-activity-points";
+import { getActivitySummaryUseCase } from "@app/usecases/activities/get-activity-summary";
 import { ActivityType } from "@infra/db/repositories/activities.repository";
+import { useSessionStore } from "@/state/session.store";
 import { Background } from "@ui/components/background";
 import { Screen } from "@ui/components/screen";
 import { Card } from "@ui/components/card";
@@ -55,6 +57,7 @@ function typeLabel(type: ActivityType | string) {
 export function ActivityDetailScreen() {
   const { t } = useT();
   const confirm = useConfirm();
+  const user = useSessionStore((s) => s.user);
   const params = useLocalSearchParams<{ id: string }>();
   const activityId = typeof params.id === "string" ? params.id : "";
 
@@ -62,6 +65,8 @@ export function ActivityDetailScreen() {
   const [loading, setLoading] = useState(true);
   const [deleting, setDeleting] = useState(false);
   const [points, setPoints] = useState<Array<{ lat: number; lng: number }>>([]);
+  const [aiSummary, setAiSummary] = useState<string | null>(null);
+  const [aiLoading, setAiLoading] = useState(false);
 
   const mapRef = useRef<MapView | null>(null);
   const coords = useMemo(() => points.map((p) => ({ latitude: p.lat, longitude: p.lng })), [points]);
@@ -126,6 +131,30 @@ export function ActivityDetailScreen() {
   const handleEdit = () => {
     if (!activityId) return;
     router.push({ pathname: "/(tabs)/activities/[id]/edit", params: { id: activityId } });
+  };
+
+  const handleAiSummary = async () => {
+    if (!activityId) return;
+
+    if (!user?.has_premium) {
+      Alert.alert(t(I18N.activities.detail.aiSummary.title), t(I18N.activities.detail.aiSummary.premiumRequired));
+      return;
+    }
+
+    setAiLoading(true);
+    try {
+      const summary = await getActivitySummaryUseCase(activityId);
+      setAiSummary(summary);
+    } catch (error: any) {
+      const status = error?.response?.status;
+      if (status === 402) {
+        Alert.alert(t(I18N.activities.detail.aiSummary.title), t(I18N.activities.detail.aiSummary.premiumRequired));
+      } else {
+        Alert.alert(t(I18N.activities.detail.aiSummary.title), t(I18N.activities.detail.aiSummary.error));
+      }
+    } finally {
+      setAiLoading(false);
+    }
   };
 
   const handleBack = () => {
@@ -243,6 +272,25 @@ export function ActivityDetailScreen() {
                     <Button title={deleting ? t(I18N.activities.detail.deleting) : t(I18N.activities.detail.delete)} onPress={handleDelete} disabled={deleting} />
                   </View>
                 </View>
+                  
+                <Card>
+                  <View className="gap-3 p-5">
+                      <Text className="text-lg font-semibold text-text">{t(I18N.activities.detail.aiSummary.title)}</Text>
+                      <Button
+                        title={aiLoading ? t(I18N.activities.detail.aiSummary.loading) : t(I18N.activities.detail.aiSummary.cta)}
+                        onPress={handleAiSummary}
+                        disabled={aiLoading}
+                      />
+
+                    {aiSummary && (
+                      <ScrollView className="max-h-64" nestedScrollEnabled>
+                        <Text className="text-base leading-6 text-text" selectable>
+                          {aiSummary}
+                        </Text>
+                      </ScrollView>
+                    )}
+                  </View>
+                </Card>
               </View>
             ) : null}
           </View>

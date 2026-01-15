@@ -128,6 +128,12 @@ export const resources = {
           },
           errors: {
             updateFailed: "Nie udało się zapisać profilu.",
+            nameRequired: "Imię i nazwisko jest wymagane.",
+            nameMin: "Imię i nazwisko musi mieć min. 2 znaki.",
+            nameMax: "Imię i nazwisko może mieć maks. 255 znaków.",
+            heightInvalid: "Wzrost musi być liczbą (cm).",
+            weightInvalid: "Waga musi być liczbą (kg).",
+            birthInvalid: "Wybierz poprawną datę urodzenia.",
           },
         },
         export: {
@@ -164,6 +170,10 @@ export const resources = {
           type: "Typ",
           date: "Zakres dat",
           sort: "Sortuj",
+          toggle: {
+            show: "Pokaż filtry",
+            hide: "Ukryj filtry",
+          },
           typeAll: "Wszystkie",
           typeRun: "Bieg",
           typeRide: "Rower",
@@ -190,6 +200,13 @@ export const resources = {
           delete: "Usuń",
           deleting: "Usuwam...",
           pace: "Tempo",
+          aiSummary: {
+            title: "Podsumowanie treningu (AI)",
+            cta: "Poproś o podsumowanie",
+            loading: "Generuję podsumowanie...",
+            premiumRequired: "Funkcja dostępna w planie Premium.",
+            error: "Nie udało się wygenerować podsumowania.",
+          },
           confirm: {
             deleteTitle: "Usunąć aktywność?",
             deleteDesc: "Tej operacji nie można cofnąć.",
@@ -401,6 +418,12 @@ export const resources = {
           },
           errors: {
             updateFailed: "Could not save profile.",
+            nameRequired: "Full name is required.",
+            nameMin: "Full name must be at least 2 characters.",
+            nameMax: "Full name must be at most 255 characters.",
+            heightInvalid: "Height must be a number (cm).",
+            weightInvalid: "Weight must be a number (kg).",
+            birthInvalid: "Choose a valid birth date.",
           },
         },
         export: {
@@ -437,6 +460,10 @@ export const resources = {
           type: "Type",
           date: "Date range",
           sort: "Sort",
+          toggle: {
+            show: "Show filters",
+            hide: "Hide filters",
+          },
           typeAll: "All",
           typeRun: "Run",
           typeRide: "Ride",
@@ -463,6 +490,13 @@ export const resources = {
           delete: "Delete",
           deleting: "Deleting...",
           pace: "Pace",
+          aiSummary: {
+            title: "Workout summary (AI)",
+            cta: "Generate summary",
+            loading: "Generating summary...",
+            premiumRequired: "Feature is available on Premium.",
+            error: "Could not generate summary.",
+          },
           confirm: {
             deleteTitle: "Delete activity?",
             deleteDesc: "This action cannot be undone.",
