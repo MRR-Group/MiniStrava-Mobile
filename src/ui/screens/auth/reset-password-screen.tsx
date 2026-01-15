@@ -13,7 +13,7 @@ import { CodeInput } from "@/ui/components/code-input";
 
 import { forgotPassword } from "@/application/usecases/auth/forgot-password";
 import { resetPassword } from "@/application/usecases/auth/reset-password";
-import { handleLaravel422 } from "@/infrastructure/api/handle-laravel-errors";
+import { handleLaravel422 } from "../../../infrastructure/api/handle-laravel-errors";
 
 import { useT } from "@/core/i18n/use-t";
 import { I18N } from "@/core/i18n/keys";
