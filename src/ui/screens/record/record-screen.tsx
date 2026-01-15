@@ -4,7 +4,7 @@ import { router } from "expo-router";
 import MapView, { Marker, Polyline, Region } from "react-native-maps";
 import * as Location from "expo-location";
 
-import { Screen } from "@/ui/components/screen";
+import { Screen } from "@ui/components/screen";
 import { Card } from "@/ui/components/card";
 import { PrimaryButton } from "@/ui/components/primary-button";
 import { Button } from "@/ui/components/button";
