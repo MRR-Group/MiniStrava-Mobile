@@ -15,7 +15,7 @@ import { Input } from "@/ui/components/input";
 import { PrimaryButton } from "@/ui/components/primary-button";
 import { Button } from "@/ui/components/button";
 import { useOnline } from "@/ui/hooks/use-online";
-import { handleLaravel422 } from "../../../infrastructure/api/handle-laravel-errors";
+import { handleLaravel422 } from "@/infrastructure/api/handle-laravel-errors";
 
 import type { UpdateProfilePayload } from "@/infrastructure/api/profile.api";
 

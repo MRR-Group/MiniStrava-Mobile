@@ -11,7 +11,7 @@ import { Button } from "@/ui/components/button";
 import { PrimaryButton } from "@/ui/components/primary-button";
 
 import { register as registerUseCase } from "@/application/usecases/auth/register";
-import { handleLaravel422 } from "../../../infrastructure/api/handle-laravel-errors";
+import { handleLaravel422 } from "@/infrastructure/api/handle-laravel-errors";
 
 import { useT } from "@/core/i18n/use-t";
 import { I18N } from "@/core/i18n/keys";

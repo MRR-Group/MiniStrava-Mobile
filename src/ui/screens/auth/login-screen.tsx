@@ -7,7 +7,7 @@ import { Button } from "@/ui/components/button";
 import { PrimaryButton } from "@/ui/components/primary-button";
 
 import { login as loginUseCase } from "@/application/usecases/auth/login";
-import { handleLaravel422 } from "../../../infrastructure/api/handle-laravel-errors";
+import { handleLaravel422 } from "@/infrastructure/api/handle-laravel-errors";
 
 import { useT } from "@/core/i18n/use-t";
 import { setAppLanguage } from "@/core/i18n/i18n";
