@@ -6,7 +6,7 @@ export function Background({ children }: PropsWithChildren) {
 
   return (
     <ImageBackground
-      source={require("@/assets/bg.png")}
+      source={require("../../../assets/bg.png")}
       style={{ flex: 1 }}
       resizeMode="stretch"
       imageStyle={{
