@@ -3,12 +3,10 @@ import { Image, Text, View, Pressable } from "react-native";
 import { useForm } from "react-hook-form";
 import { router } from "expo-router";
 
-import { Background } from "@/ui/components/background";
 import { Card } from "@/ui/components/card";
 import { Input } from "@/ui/components/input";
 import { Button } from "@/ui/components/button";
 import { PrimaryButton } from "@/ui/components/primary-button";
-import { Screen } from "@/ui/components/screen";
 
 import { login as loginUseCase } from "@/application/usecases/auth/login";
 import { handleLaravel422 } from "@/infrastructure/api/handle-laravel-errors";
@@ -16,6 +14,8 @@ import { handleLaravel422 } from "@/infrastructure/api/handle-laravel-errors";
 import { useT } from "@/core/i18n/use-t";
 import { setAppLanguage } from "@/core/i18n/i18n";
 import { I18N } from "@/core/i18n/keys";
+import { Background } from "@ui/components/background";
+import { Screen } from "@ui/components/screen";
 
 type LoginForm = {
   email: string;

@@ -10,7 +10,7 @@ import { useSessionStore } from "@/state/session.store";
 import { useT } from "@/core/i18n/use-t";
 import { I18N } from "@/core/i18n/keys";
 import { Background } from "@ui/components/background";
-import { Screen } from "@/ui/components/screen";
+import { Screen } from "@ui/components/screen";
 import { Card } from "@/ui/components/card";
 import { StatTile } from "@/ui/components/stat-tile";
 import { Button } from "@/ui/components/button";

@@ -141,109 +141,111 @@ export function ActivityDetailScreen() {
   return (
     <Background>
       <Screen>
-        <View className="gap-4 py-6">
-          <View className="flex-row items-center justify-between px-2">
-            <Text className="text-2xl font-bold text-text">{t(I18N.activities.detail.title)}</Text>
-            <Button title={t(I18N.activities.detail.back)} onPress={handleBack} />
-          </View>
+        <View className="flex-1 items-center justify-center py-6">
+          <View className="gap-4 py-6">
+            <View className="flex-row items-center justify-between px-2 w-full flex">
+              <Text className="text-2xl font-bold text-text">{t(I18N.activities.detail.title)}</Text>
+              <Button title={t(I18N.activities.detail.back)} onPress={handleBack} />
+            </View>
 
-          {loading ? (
-            <Card>
-              <View className="p-5">
-                <Text className="text-center text-muted">{t(I18N.common.loading)}</Text>
-              </View>
-            </Card>
-          ) : null}
-
-          {notFound ? (
-            <Card>
-              <View className="p-5 gap-3">
-                <Text className="text-lg font-semibold text-text">{t(I18N.activities.detail.notFound)}</Text>
-                <Button title={t(I18N.activities.detail.back)} onPress={handleBack} />
-              </View>
-            </Card>
-          ) : null}
-
-          {!loading && activity ? (
-            <View className="gap-4">
+            {loading ? (
               <Card>
-                <View className="gap-4 p-5">
-                  <View className="flex-row items-center gap-3">
-                    <Text className="text-3xl">{typeLabel(activity.type)}</Text>
-                    <View className="flex-1">
-                      <Text className="text-xl font-semibold text-text">{activity.title || "—"}</Text>
-                      <Text className="text-xs text-muted">{dayjs(activity.startAt).format("YYYY-MM-DD HH:mm")}</Text>
-                    </View>
-                  </View>
-
-                  <View className="flex-row gap-3">
-                    <View className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-                      <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.activities.fields.distance)}</Text>
-                      <Text className="text-lg font-semibold text-text">{formatDistance(activity.distanceM)}</Text>
-                    </View>
-                    <View className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-                      <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.activities.fields.duration)}</Text>
-                      <Text className="text-lg font-semibold text-text">{formatDuration(activity.durationS)}</Text>
-                    </View>
-                    <View className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-                      <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.activities.detail.pace)}</Text>
-                      <Text className="text-lg font-semibold text-text">{formatPace(activity.avgPaceSecPerKm)}</Text>
-                    </View>
-                  </View>
-
-                  <View className="mt-2 h-56 overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-                    {coords.length > 0 ? (
-                      <MapView
-                        ref={mapRef}
-                        style={{ flex: 1 }}
-                        initialRegion={fallbackRegion || {
-                          latitude: coords[0].latitude,
-                          longitude: coords[0].longitude,
-                          latitudeDelta: 0.01,
-                          longitudeDelta: 0.01,
-                        }}
-                        scrollEnabled={false}
-                        zoomEnabled={false}
-                        pitchEnabled={false}
-                        rotateEnabled={false}
-                        pointerEvents="none"
-                      >
-                        <Polyline coordinates={coords} strokeColor="#ef4444" strokeWidth={4} />
-                        <Marker coordinate={coords[0]} pinColor="#ef4444" />
-                        <Marker coordinate={coords[coords.length - 1]} pinColor="#22c55e" />
-                      </MapView>
-                    ) : (
-                      <View className="flex-1 items-center justify-center">
-                        <Text className="text-muted">{t(I18N.common.loading)}</Text>
-                      </View>
-                    )}
-                  </View>
-
-                  {activity.notes ? (
-                    <View className="rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-                      <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.record.save.fields.notes)}</Text>
-                      <Text className="text-base text-text">{activity.notes}</Text>
-                    </View>
-                  ) : null}
-
-                  {activity.photoUri ? (
-                    <View className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
-                      <Image source={{ uri: activity.photoUri }} style={{ width: "100%", height: 220 }} resizeMode="cover" />
-                    </View>
-                  ) : null}
+                <View className="p-5">
+                  <Text className="text-center text-muted">{t(I18N.common.loading)}</Text>
                 </View>
               </Card>
+            ) : null}
 
-              <View className="flex-row gap-3 px-2">
-                <View className="flex-1">
-                  <Button title={t(I18N.activities.detail.edit)} onPress={handleEdit} />
+            {notFound ? (
+              <Card>
+                <View className="p-5 gap-3">
+                  <Text className="text-lg font-semibold text-text">{t(I18N.activities.detail.notFound)}</Text>
+                  <Button title={t(I18N.activities.detail.back)} onPress={handleBack} />
                 </View>
-                <View className="flex-1">
-                  <Button title={deleting ? t(I18N.activities.detail.deleting) : t(I18N.activities.detail.delete)} onPress={handleDelete} disabled={deleting} />
+              </Card>
+            ) : null}
+
+            {!loading && activity ? (
+              <View className="gap-4 flex justify-centers items-center">
+                <Card>
+                  <View className="gap-4 p-5">
+                    <View className="flex-row items-center gap-3">
+                      <Text className="text-3xl">{typeLabel(activity.type)}</Text>
+                      <View className="flex-1">
+                        <Text className="text-xl font-semibold text-text">{activity.title || "—"}</Text>
+                        <Text className="text-xs text-muted">{dayjs(activity.startAt).format("YYYY-MM-DD HH:mm")}</Text>
+                      </View>
+                    </View>
+
+                    <View className="flex-row gap-3">
+                      <View className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
+                        <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.activities.fields.distance)}</Text>
+                        <Text className="text-lg font-semibold text-text">{formatDistance(activity.distanceM)}</Text>
+                      </View>
+                      <View className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
+                        <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.activities.fields.duration)}</Text>
+                        <Text className="text-lg font-semibold text-text">{formatDuration(activity.durationS)}</Text>
+                      </View>
+                      <View className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
+                        <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.activities.detail.pace)}</Text>
+                        <Text className="text-lg font-semibold text-text">{formatPace(activity.avgPaceSecPerKm)}</Text>
+                      </View>
+                    </View>
+
+                    <View className="mt-2 h-56 overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                      {coords.length > 0 ? (
+                        <MapView
+                          ref={mapRef}
+                          style={{ flex: 1 }}
+                          initialRegion={fallbackRegion || {
+                            latitude: coords[0].latitude,
+                            longitude: coords[0].longitude,
+                            latitudeDelta: 0.01,
+                            longitudeDelta: 0.01,
+                          }}
+                          scrollEnabled={false}
+                          zoomEnabled={false}
+                          pitchEnabled={false}
+                          rotateEnabled={false}
+                          pointerEvents="none"
+                        >
+                          <Polyline coordinates={coords} strokeColor="#ef4444" strokeWidth={4} />
+                          <Marker coordinate={coords[0]} pinColor="#ef4444" />
+                          <Marker coordinate={coords[coords.length - 1]} pinColor="#22c55e" />
+                        </MapView>
+                      ) : (
+                        <View className="flex-1 items-center justify-center">
+                          <Text className="text-muted">{t(I18N.common.loading)}</Text>
+                        </View>
+                      )}
+                    </View>
+
+                    {activity.notes ? (
+                      <View className="rounded-xl border border-white/10 bg-white/5 px-3 py-2">
+                        <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.record.save.fields.notes)}</Text>
+                        <Text className="text-base text-text">{activity.notes}</Text>
+                      </View>
+                    ) : null}
+
+                    {activity.photoUri ? (
+                      <View className="overflow-hidden rounded-2xl border border-white/10 bg-white/5">
+                        <Image source={{ uri: activity.photoUri }} style={{ width: "100%", height: 220 }} resizeMode="cover" />
+                      </View>
+                    ) : null}
+                  </View>
+                </Card>
+
+                <View className="flex-row gap-3 px-2">
+                  <View className="flex-1">
+                    <Button title={t(I18N.activities.detail.edit)} onPress={handleEdit} />
+                  </View>
+                  <View className="flex-1">
+                    <Button title={deleting ? t(I18N.activities.detail.deleting) : t(I18N.activities.detail.delete)} onPress={handleDelete} disabled={deleting} />
+                  </View>
                 </View>
               </View>
-            </View>
-          ) : null}
+            ) : null}
+          </View>
         </View>
       </Screen>
     </Background>

@@ -6,12 +6,12 @@ import * as ImagePicker from "expo-image-picker";
 import dayjs from "dayjs";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
-import { Screen } from "@/ui/components/screen";
+import { Screen } from "@ui/components/screen";
 import { Card } from "@/ui/components/card";
 import { Input } from "@/ui/components/input";
 import { PrimaryButton } from "@/ui/components/primary-button";
 import { Button } from "@/ui/components/button";
-import { Segmented } from "@/ui/components/segmented";
+import { Segmented } from "@ui/components/segmented";
 
 import { useRecordingStore } from "@/state/recording.store";
 import { saveRecordingUseCase } from "@app/usecases/activities/save-recording";
