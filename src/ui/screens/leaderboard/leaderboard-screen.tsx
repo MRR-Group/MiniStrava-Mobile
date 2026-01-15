@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { FlatList, Image, Text, View } from "react-native";
+import { FlatList, Text, View } from "react-native";
 import { router } from "expo-router";
 
 import { getWeeklyLeaderboard, LeaderboardEntry } from "@app/usecases/leaderboard/get-weekly-leaderboard";
@@ -42,10 +42,23 @@ export function LeaderboardScreen() {
     const mapped = data
       .sort((a, b) => a.place - b.place)
       .map((r) => ({
-      ...r,
+        ...r,
         position: r.place,
-      isYou: !!user && r.userId === user.id,
-    }));
+        isYou: !!user && r.userId === user.id,
+      }));
+
+    const youPresent = mapped.some((r) => r.isYou);
+    if (!youPresent && user) {
+      mapped.push({
+        userId: user.id,
+        name: user.name,
+        distanceM: 0,
+        place: mapped.length + 1,
+        position: mapped.length + 1,
+        isYou: true,
+      });
+    }
+
     setRows(mapped);
     setLoading(false);
   };
@@ -65,7 +78,9 @@ export function LeaderboardScreen() {
           </View>
 
           <View>
-            <Text className="text-base font-semibold text-text">{item.name}</Text>
+            <Text className={`text-base font-semibold ${item.isYou ? "text-emerald-300" : "text-text"}`}>
+              {item.name}
+            </Text>
             {item.isYou ? (
               <Text className="text-xs text-emerald-300">{t(I18N.activities.leaderboard.you)}</Text>
             ) : null}
@@ -96,17 +111,6 @@ export function LeaderboardScreen() {
             <Text className="text-2xl font-bold text-text">{t(I18N.activities.leaderboard.title)}</Text>
             <Button title={loading ? t(I18N.common.loading) : t(I18N.activities.leaderboard.refresh)} onPress={load} />
           </View>
-
-          {yourRow ? (
-            <Card>
-              <View className="gap-2 p-4">
-                <Text className="text-xs text-muted">{t(I18N.activities.leaderboard.you)}</Text>
-                <Text className="text-xl font-semibold text-text">{yourRow.name}</Text>
-                <Text className="text-sm text-text">{t(I18N.activities.leaderboard.yourPosition, { pos: `#${yourRow.position}` })}</Text>
-                <Text className="text-sm text-muted">{formatDistance(yourRow.distanceM)}</Text>
-              </View>
-            </Card>
-          ) : null}
 
           <FlatList
             data={rows}

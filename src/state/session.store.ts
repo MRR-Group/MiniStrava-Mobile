@@ -31,6 +31,11 @@ type SessionState = {
   clearSession: () => Promise<void>;
 };
 
+function normalizeUser(u: any): AuthUser | null {
+  if (!u) return null;
+  return (u as any).data ?? (u as AuthUser);
+}
+
 export const useSessionStore = create<SessionState>((set) => ({
   token: null,
   user: null,
@@ -42,7 +47,7 @@ export const useSessionStore = create<SessionState>((set) => ({
       SecureStore.getItemAsync(USER_KEY),
     ]);
 
-    const user = userJson ? (JSON.parse(userJson) as AuthUser) : null;
+    const user = userJson ? normalizeUser(JSON.parse(userJson)) : null;
     set({ token: token ?? null, user, hydrated: true });
   },
 
@@ -52,8 +57,9 @@ export const useSessionStore = create<SessionState>((set) => ({
   },
 
   setUser: async (user) => {
-    await SecureStore.setItemAsync(USER_KEY, JSON.stringify(user));
-    set({ user });
+    const normalized = normalizeUser(user);
+    await SecureStore.setItemAsync(USER_KEY, JSON.stringify(normalized));
+    set({ user: normalized });
   },
 
   clearSession: async () => {

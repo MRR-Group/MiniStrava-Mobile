@@ -5,7 +5,8 @@ export const resources = {
         back: "Powrót",
         backToLogin: "Powrót do logowania",
         resendCode: "Wyślij kod ponownie",
-        loading: "Ładowanie"
+        loading: "Ładowanie",
+        offline: "Tryb offline – zmiany mogą nie zapisać się."
       },
       record: {
         title: "Dzisiejszy trening",
@@ -112,6 +113,21 @@ export const resources = {
           options: {
             pl: "Polski",
             en: "Angielski",
+          },
+        },
+        edit: {
+          title: "Edytuj profil",
+          offline: "Brak internetu – edycja niedostępna",
+          fields: {
+            firstName: "Imię",
+            lastName: "Nazwisko",
+          },
+          actions: {
+            save: "Zapisz",
+            cancel: "Anuluj",
+          },
+          errors: {
+            updateFailed: "Nie udało się zapisać profilu.",
           },
         },
         actions: {
@@ -256,7 +272,8 @@ export const resources = {
         back: "Back",
         backToLogin: "Back to login",
         resendCode: "Resend code",
-        loading: "Loading"
+        loading: "Loading",
+        offline: "Offline mode – changes may not sync."
       },
       record: {
         title: "Today's workout",
@@ -363,6 +380,21 @@ export const resources = {
           options: {
             pl: "Polish",
             en: "English",
+          },
+        },
+        edit: {
+          title: "Edit profile",
+          offline: "Offline – editing disabled",
+          fields: {
+            firstName: "First name",
+            lastName: "Last name",
+          },
+          actions: {
+            save: "Save",
+            cancel: "Cancel",
+          },
+          errors: {
+            updateFailed: "Could not save profile.",
           },
         },
         actions: {
