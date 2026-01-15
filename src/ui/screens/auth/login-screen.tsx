@@ -83,7 +83,7 @@ export function LoginScreen() {
               <Image
                 resizeMode="contain"
                 style={{ width: "100%" } as any}
-                source={require("@/assets/logo.png")}
+                source={require("../../../../assets/logo.png")}
               />
             </View>
 
