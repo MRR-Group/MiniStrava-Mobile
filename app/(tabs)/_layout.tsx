@@ -45,6 +45,25 @@ export default function TabsLayout() {
         }}
       />
 
+      {/* Hidden record stack; keep accessible via navigation but off the tab bar */}
+      <Tabs.Screen
+        name="record"
+        options={{
+          href: null,
+          title: "Record",
+        }}
+      />
+
+      <Tabs.Screen
+        name="leaderboard"
+        options={{
+          title: "Ranking",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="trophy" size={size} color={color} />
+          ),
+        }}
+      />
+
       <Tabs.Screen
         name="profile"
         options={{

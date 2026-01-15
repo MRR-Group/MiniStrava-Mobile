@@ -1,6 +1,6 @@
 import React, { useEffect, useMemo, useState } from "react";
 import { FlatList, Text, View } from "react-native";
-import { router, useFocusEffect } from "expo-router";
+import { useFocusEffect } from "expo-router";
 
 import { listActivities } from "@app/usecases/activities/list-activities";
 import { syncPendingOnce } from "@app/usecases/services/sync/sync-pending";
@@ -103,7 +103,6 @@ export function ActivitiesScreen() {
           <View className="flex-row items-center justify-between px-2">
             <Text className="text-2xl font-bold text-text">{t(I18N.activities.title)}</Text>
             <View className="flex-row gap-2">
-              <Button title={t(I18N.activities.leaderboard.title)} onPress={() => router.push("/(tabs)/activities/leaderboard")} />
               <Button title={syncing ? t(I18N.activities.actions.syncing) : t(I18N.activities.actions.sync)} onPress={handleSyncPress} />
             </View>
           </View>
