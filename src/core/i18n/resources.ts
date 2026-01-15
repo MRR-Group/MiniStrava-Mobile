@@ -98,6 +98,7 @@ export const resources = {
           distance: "Łączny dystans",
           time: "Czas w ruchu",
           pace: "Śr. tempo",
+          speed: "Śr. prędkość",
         },
         details: {
           email: "E-mail",
@@ -333,6 +334,7 @@ export const resources = {
           distance: "Total distance",
           time: "Moving time",
           pace: "Avg pace",
+          speed: "Avg speed",
         },
         details: {
           email: "Email",

@@ -50,6 +50,16 @@ function formatPace(totalDistanceM: number, totalSeconds: number) {
   return `${String(m).padStart(2, "0")}:${String(s).padStart(2, "0")} /km`;
 }
 
+function formatSpeed(totalDistanceM: number, totalSeconds: number) {
+  if (!totalDistanceM || !totalSeconds) return "—";
+
+  const kmh = (totalDistanceM / totalSeconds) * 3.6;
+
+  if (!Number.isFinite(kmh) || kmh <= 0) return "—";
+
+  return `${kmh.toFixed(1)} km/h`;
+}
+
 function initialsFromName(name?: string | null) {
   if (!name) return "";
 
@@ -108,8 +118,8 @@ export function ProfileScreen() {
     return dayjs(summary.lastActivityAtMs).format("YYYY.MM.DD HH:mm");
   }, [summary?.lastActivityAtMs, t]);
 
-  const paceLabel = useMemo(
-    () => formatPace(summary?.totalDistanceM ?? 0, summary?.totalDurationS ?? 0),
+  const speedLabel = useMemo(
+    () => formatSpeed(summary?.totalDistanceM ?? 0, summary?.totalDurationS ?? 0),
     [summary?.totalDistanceM, summary?.totalDurationS]
   );
 
@@ -187,7 +197,7 @@ export function ProfileScreen() {
                   <StatTile label={t(I18N.profile.metrics.time)} value={statsTime} />
                 </View>
                 <View className="flex-row gap-3">
-                  <StatTile label={t(I18N.profile.metrics.pace)} value={paceLabel} />
+                  <StatTile label={t(I18N.profile.metrics.speed)} value={speedLabel} />
                   <StatTile label={t(I18N.profile.lastActivity)} value={lastActivity} />
                 </View>
               </View>

@@ -166,6 +166,7 @@ export const I18N = {
       distance: "profile.metrics.distance",
       time: "profile.metrics.time",
       pace: "profile.metrics.pace",
+      speed: "profile.metrics.speed",
     },
     details: {
       email: "profile.details.email",
