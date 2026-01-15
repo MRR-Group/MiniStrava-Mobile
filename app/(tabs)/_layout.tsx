@@ -36,21 +36,30 @@ export default function TabsLayout() {
       />
 
       <Tabs.Screen
-        name="record"
-        options={{
-          title: "Nagrywaj",
-          tabBarIcon: ({ color, size }) => (
-            <Ionicons name="play-circle" size={size} color={color} />
-          ),
-        }}
-      />
-
-      <Tabs.Screen
         name="activities"
         options={{
           title: "Aktywności",
           tabBarIcon: ({ color, size }) => (
             <Ionicons name="list" size={size} color={color} />
+          ),
+        }}
+      />
+
+      {/* Hidden record stack; keep accessible via navigation but off the tab bar */}
+      <Tabs.Screen
+        name="record"
+        options={{
+          href: null,
+          title: "Record",
+        }}
+      />
+
+      <Tabs.Screen
+        name="leaderboard"
+        options={{
+          title: "Ranking",
+          tabBarIcon: ({ color, size }) => (
+            <Ionicons name="trophy" size={size} color={color} />
           ),
         }}
       />

@@ -102,7 +102,9 @@ export function ActivitiesScreen() {
         <View className="flex-1 gap-4 py-6">
           <View className="flex-row items-center justify-between px-2">
             <Text className="text-2xl font-bold text-text">{t(I18N.activities.title)}</Text>
-            <Button title={syncing ? t(I18N.activities.actions.syncing) : t(I18N.activities.actions.sync)} onPress={handleSyncPress} />
+            <View className="flex-row gap-2">
+              <Button title={syncing ? t(I18N.activities.actions.syncing) : t(I18N.activities.actions.sync)} onPress={handleSyncPress} />
+            </View>
           </View>
 
           <View className="gap-3 px-2">

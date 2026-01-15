@@ -166,6 +166,7 @@ export const I18N = {
       distance: "profile.metrics.distance",
       time: "profile.metrics.time",
       pace: "profile.metrics.pace",
+      speed: "profile.metrics.speed",
     },
     details: {
       email: "profile.details.email",
@@ -173,6 +174,13 @@ export const I18N = {
       height: "profile.details.height",
       weight: "profile.details.weight",
       birth: "profile.details.birth",
+    },
+    language: {
+      title: "profile.language.title",
+      options: {
+        pl: "profile.language.options.pl",
+        en: "profile.language.options.en",
+      },
     },
     actions: {
       logout: "profile.actions.logout",
@@ -189,6 +197,14 @@ export const I18N = {
     actions: {
       sync: "activities.actions.sync",
       syncing: "activities.actions.syncing",
+    },
+    leaderboard: {
+      title: "activities.leaderboard.title",
+      refresh: "activities.leaderboard.refresh",
+      you: "activities.leaderboard.you",
+      yourPosition: "activities.leaderboard.yourPosition",
+      distanceThisWeek: "activities.leaderboard.distanceThisWeek",
+      empty: "activities.leaderboard.empty",
     },
     filters: {
       type: "activities.filters.type",

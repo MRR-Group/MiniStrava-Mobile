@@ -98,6 +98,7 @@ export const resources = {
           distance: "Łączny dystans",
           time: "Czas w ruchu",
           pace: "Śr. tempo",
+          speed: "Śr. prędkość",
         },
         details: {
           email: "E-mail",
@@ -105,6 +106,13 @@ export const resources = {
           height: "Wzrost",
           weight: "Waga",
           birth: "Data urodzenia",
+        },
+        language: {
+          title: "Język aplikacji",
+          options: {
+            pl: "Polski",
+            en: "Angielski",
+          },
         },
         actions: {
           logout: "Wyloguj się",
@@ -121,6 +129,14 @@ export const resources = {
         actions: {
           sync: "Synchronizuj",
           syncing: "Synchronizuję...",
+        },
+        leaderboard: {
+          title: "Ranking",
+          refresh: "Odśwież",
+          you: "Ty",
+          yourPosition: "Twoja pozycja: {{pos}}",
+          distanceThisWeek: "Ten tydzień",
+          empty: "Brak danych do rankingu",
         },
         filters: {
           type: "Typ",
@@ -333,6 +349,7 @@ export const resources = {
           distance: "Total distance",
           time: "Moving time",
           pace: "Avg pace",
+          speed: "Avg speed",
         },
         details: {
           email: "Email",
@@ -340,6 +357,13 @@ export const resources = {
           height: "Height",
           weight: "Weight",
           birth: "Birth date",
+        },
+        language: {
+          title: "App language",
+          options: {
+            pl: "Polish",
+            en: "English",
+          },
         },
         actions: {
           logout: "Sign out",
@@ -356,6 +380,14 @@ export const resources = {
         actions: {
           sync: "Sync",
           syncing: "Syncing...",
+        },
+        leaderboard: {
+          title: "Leaderboard",
+          refresh: "Refresh",
+          you: "You",
+          yourPosition: "Your position: {{pos}}",
+          distanceThisWeek: "This week",
+          empty: "No leaderboard data",
         },
         filters: {
           type: "Type",
