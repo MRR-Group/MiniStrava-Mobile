@@ -43,13 +43,27 @@ export default {
       "**/*"
     ],
     "ios": {
-      "supportsTablet": true
+      "supportsTablet": true,
+      "infoPlist": {
+        "NSLocationWhenInUseUsageDescription": "We use your location to track your workouts.",
+        "NSLocationAlwaysAndWhenInUseUsageDescription": "We need background location to record your route while you run.",
+        "UIBackgroundModes": ["location"]
+      }
     },
     "android": {
       "package": "pl.mrrgroup.ministrava",
       "adaptiveIcon": {
         "foregroundImage": "./assets/adaptive-icon.png",
         "backgroundColor": "#0b0d12"
+      },
+      "permissions": [
+        "ACCESS_FINE_LOCATION",
+        "ACCESS_COARSE_LOCATION",
+        "ACCESS_BACKGROUND_LOCATION"
+      ],
+      "foregroundService": {
+        "notificationTitle": "MiniStrava",
+        "notificationBody": "Recording your route"
       }
     },
     "extra": {
