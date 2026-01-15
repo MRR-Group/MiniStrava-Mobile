@@ -197,6 +197,12 @@ export const I18N = {
         updateFailed: "profile.edit.errors.updateFailed",
       },
     },
+    export: {
+      title: "profile.export.title",
+      cta: "profile.export.cta",
+      success: "profile.export.success",
+      error: "profile.export.error",
+    },
     actions: {
       logout: "profile.actions.logout",
       refresh: "profile.actions.refresh",
