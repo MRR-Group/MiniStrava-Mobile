@@ -257,6 +257,13 @@ export const I18N = {
       delete: "activities.detail.delete",
       deleting: "activities.detail.deleting",
       pace: "activities.detail.pace",
+      aiSummary: {
+        title: "activities.detail.aiSummary.title",
+        cta: "activities.detail.aiSummary.cta",
+        loading: "activities.detail.aiSummary.loading",
+        premiumRequired: "activities.detail.aiSummary.premiumRequired",
+        error: "activities.detail.aiSummary.error",
+      },
       confirm: {
         deleteTitle: "activities.detail.confirm.deleteTitle",
         deleteDesc: "activities.detail.confirm.deleteDesc",

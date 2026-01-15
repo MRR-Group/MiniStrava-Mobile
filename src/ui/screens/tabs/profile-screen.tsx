@@ -19,10 +19,7 @@ import { AuthApi } from "@/infrastructure/api/auth.api";
 import { getCurrentLanguage, setAppLanguage } from "@/core/i18n/i18n";
 import { Segmented } from "@ui/components/segmented";
 import { useOnline } from "@/ui/hooks/use-online";
-<<<<<<< HEAD
 import { exportProfileCsvUseCase } from "@/application/usecases/profile/export-profile-csv";
-=======
->>>>>>> ded2a863c41b44cb4905ae3891a4351591dfef04
 
 function formatDistance(meters: number) {
   const km = meters / 1000;
@@ -93,10 +90,7 @@ export function ProfileScreen() {
   const setUser = useSessionStore((s) => s.setUser);
   const [lang, setLang] = useState<"pl" | "en">(getCurrentLanguage());
   const online = useOnline();
-<<<<<<< HEAD
   const [exporting, setExporting] = useState(false);
-=======
->>>>>>> ded2a863c41b44cb4905ae3891a4351591dfef04
 
   const { data: summary, refetch, isFetching } = useQuery({
     queryKey: ["profile-summary"],

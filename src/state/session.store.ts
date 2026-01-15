@@ -18,6 +18,7 @@ export type AuthUser = {
 
   avatar: string;
   created_at: string;
+  has_premium?: boolean;
 };
 
 type SessionState = {

@@ -190,6 +190,13 @@ export const resources = {
           delete: "Usuń",
           deleting: "Usuwam...",
           pace: "Tempo",
+          aiSummary: {
+            title: "Podsumowanie treningu (AI)",
+            cta: "Poproś o podsumowanie",
+            loading: "Generuję podsumowanie...",
+            premiumRequired: "Funkcja dostępna w planie Premium.",
+            error: "Nie udało się wygenerować podsumowania.",
+          },
           confirm: {
             deleteTitle: "Usunąć aktywność?",
             deleteDesc: "Tej operacji nie można cofnąć.",
@@ -463,6 +470,13 @@ export const resources = {
           delete: "Delete",
           deleting: "Deleting...",
           pace: "Pace",
+          aiSummary: {
+            title: "Workout summary (AI)",
+            cta: "Generate summary",
+            loading: "Generating summary...",
+            premiumRequired: "Feature is available on Premium.",
+            error: "Could not generate summary.",
+          },
           confirm: {
             deleteTitle: "Delete activity?",
             deleteDesc: "This action cannot be undone.",
