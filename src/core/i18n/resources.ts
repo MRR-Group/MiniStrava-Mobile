@@ -130,6 +130,12 @@ export const resources = {
             updateFailed: "Nie udało się zapisać profilu.",
           },
         },
+        export: {
+          title: "Eksport danych",
+          cta: "Eksportuj CSV",
+          success: "Plik CSV zapisany.",
+          error: "Nie udało się wyeksportować danych.",
+        },
         actions: {
           logout: "Wyloguj się",
           refresh: "Odśwież",
@@ -396,6 +402,12 @@ export const resources = {
           errors: {
             updateFailed: "Could not save profile.",
           },
+        },
+        export: {
+          title: "Export data",
+          cta: "Export CSV",
+          success: "CSV file saved.",
+          error: "Could not export data.",
         },
         actions: {
           logout: "Sign out",

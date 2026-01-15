@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useState } from "react";
-import { Image, Text, View } from "react-native";
+import { Image, Text, View, Share, Alert } from "react-native";
 import { router } from "expo-router";
 import dayjs from "dayjs";
 import { useQuery } from "@tanstack/react-query";
@@ -19,6 +19,7 @@ import { AuthApi } from "@/infrastructure/api/auth.api";
 import { getCurrentLanguage, setAppLanguage } from "@/core/i18n/i18n";
 import { Segmented } from "@ui/components/segmented";
 import { useOnline } from "@/ui/hooks/use-online";
+import { exportProfileCsvUseCase } from "@/application/usecases/profile/export-profile-csv";
 
 function formatDistance(meters: number) {
   const km = meters / 1000;
@@ -89,6 +90,7 @@ export function ProfileScreen() {
   const setUser = useSessionStore((s) => s.setUser);
   const [lang, setLang] = useState<"pl" | "en">(getCurrentLanguage());
   const online = useOnline();
+  const [exporting, setExporting] = useState(false);
 
   const { data: summary, refetch, isFetching } = useQuery({
     queryKey: ["profile-summary"],
@@ -158,6 +160,20 @@ export function ProfileScreen() {
     refetchUser();
   };
 
+  const onExport = async () => {
+    if (!online || exporting) return;
+    setExporting(true);
+    try {
+      const path = await exportProfileCsvUseCase();
+      await Share.share({ url: path, message: path, title: t(I18N.profile.export.title) });
+    } catch (e) {
+      console.error("[Profile] export csv failed", e);
+      Alert.alert(t(I18N.profile.export.title), t(I18N.profile.export.error));
+    } finally {
+      setExporting(false);
+    }
+  };
+
   return (
     <Background>
       <Screen>
@@ -190,14 +206,21 @@ export function ProfileScreen() {
             <View className="gap-4 p-5">
               <View className="flex-row items-center justify-between">
                 <Text className="text-lg font-semibold text-text">{t(I18N.profile.title)}</Text>
-                <Button
-                  title={
-                    isFetching || isFetchingUser
-                      ? `${t(I18N.common.loading)}...`
-                      : t(I18N.profile.actions.refresh)
-                  }
-                  onPress={onRefresh}
-                />
+                <View className="flex-row gap-2">
+                  <Button
+                    title={
+                      isFetching || isFetchingUser
+                        ? `${t(I18N.common.loading)}...`
+                        : t(I18N.profile.actions.refresh)
+                    }
+                    onPress={onRefresh}
+                  />
+                  <Button
+                    title={exporting ? `${t(I18N.common.loading)}...` : t(I18N.profile.export.cta)}
+                    onPress={onExport}
+                    disabled={!online || exporting}
+                  />
+                </View>
               </View>
 
               <View className="flex-row gap-3">
