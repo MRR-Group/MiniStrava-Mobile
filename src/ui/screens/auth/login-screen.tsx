@@ -2,7 +2,6 @@ import React, { useState } from "react";
 import { Image, Text, View, Pressable } from "react-native";
 import { useForm } from "react-hook-form";
 import { router } from "expo-router";
-
 import { Input } from "@/ui/components/input";
 import { Button } from "@/ui/components/button";
 import { PrimaryButton } from "@/ui/components/primary-button";
