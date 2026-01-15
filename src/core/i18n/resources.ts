@@ -54,6 +54,7 @@ export const resources = {
             titleMin: "Za krótki tytuł",
             titleMax: "Za długi tytuł",
             distanceRequired: "Podaj dystans",
+            distanceMin: "Minimalny dystans to 0.001 km (1 m)",
             durationRequired: "Podaj czas trwania",
             dateRequired: "Podaj datę",
             timeRequired: "Podaj godzinę",
@@ -116,6 +117,10 @@ export const resources = {
         status: {
           synced: "Zsynchronizowana",
           local: "Lokalnie (oczekuje na sync)",
+        },
+        actions: {
+          sync: "Synchronizuj",
+          syncing: "Synchronizuję...",
         },
         fields: {
           distance: "Dystans",
@@ -244,6 +249,7 @@ export const resources = {
             titleMin: "Too short",
             titleMax: "Too long",
             distanceRequired: "Distance is required",
+            distanceMin: "Minimum distance is 0.001 km (1 m)",
             durationRequired: "Duration is required",
             dateRequired: "Date is required",
             timeRequired: "Time is required",
@@ -306,6 +312,10 @@ export const resources = {
         status: {
           synced: "Synced",
           local: "Local (pending sync)",
+        },
+        actions: {
+          sync: "Sync",
+          syncing: "Syncing...",
         },
         fields: {
           distance: "Distance",

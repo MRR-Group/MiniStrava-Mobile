@@ -1,5 +1,6 @@
 import { ActivityRepository, ActivityType } from "@infra/db/repositories/activities.repository";
 import { GpsPointsRepository } from "@infra/db/repositories/gps-points-repo.repository";
+import { SyncQueueRepo } from "@infra/db/repositories/sync-queue.repository";
 import { stopBackgroundTracking } from "@infra/device/location-tracker";
 import { useRecordingStore } from "@state/recording.store";
 
@@ -42,6 +43,13 @@ export async function saveRecordingUseCase(input: SaveRecordingInput) {
     avgPaceSecPerKm,
     photoUri: input.photoUri,
     updatedAt: now,
+  });
+
+  await SyncQueueRepo.add({
+    id: `sync_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+    kind: "activity.create",
+    payloadJson: JSON.stringify({ localActivityId: state.recordingId }),
+    createdAt: Date.now(),
   });
 
   await GpsPointsRepository.insertMany(

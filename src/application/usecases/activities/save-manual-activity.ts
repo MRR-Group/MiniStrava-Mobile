@@ -1,4 +1,5 @@
 import { ActivityRepository, ActivityType } from "@infra/db/repositories/activities.repository";
+import { SyncQueueRepo } from "@infra/db/repositories/sync-queue.repository";
 
 function generateActivityId() {
   return `manual_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`;
@@ -39,5 +40,12 @@ export async function saveManualActivityUseCase(input: SaveManualActivityInput) 
     avgPaceSecPerKm,
     photoUri: input.photoUri,
     updatedAt,
+  });
+
+  await SyncQueueRepo.add({
+    id: `sync_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+    kind: "activity.create",
+    payloadJson: JSON.stringify({ localActivityId: id }),
+    createdAt: Date.now(),
   });
 }

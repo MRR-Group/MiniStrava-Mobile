@@ -1,6 +1,6 @@
 import { db } from "@infra/db/client";
 import { activities } from "@infra/db/schema/activities";
-import { eq, inArray, sql } from "drizzle-orm";
+import { eq, inArray, sql, ne } from "drizzle-orm";
 
 export type ActivityType = "run" | "walk" | "ride" | "other";
 
@@ -66,6 +66,15 @@ export const ActivityRepository = {
     return db
       .select()
       .from(activities)
+      .orderBy(sql`${activities.startAt} DESC`)
+      .limit(limit);
+  },
+
+  async listNotSynced(limit = 200): Promise<typeof activities.$inferSelect[]> {
+    return db
+      .select()
+      .from(activities)
+      .where(ne(activities.status, "synced"))
       .orderBy(sql`${activities.startAt} DESC`)
       .limit(limit);
   },

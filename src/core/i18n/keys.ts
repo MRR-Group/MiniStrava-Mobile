@@ -128,6 +128,7 @@ export const I18N = {
           titleMin: "record.save.errors.titleMin",
           titleMax: "record.save.errors.titleMax",
           distanceRequired: "record.save.errors.distanceRequired",
+           distanceMin: "record.save.errors.distanceMin",
           durationRequired: "record.save.errors.durationRequired",
           dateRequired: "record.save.errors.dateRequired",
           timeRequired: "record.save.errors.timeRequired",
@@ -184,6 +185,10 @@ export const I18N = {
     status: {
       synced: "activities.status.synced",
       local: "activities.status.local",
+    },
+    actions: {
+      sync: "activities.actions.sync",
+      syncing: "activities.actions.syncing",
     },
     fields: {
       distance: "activities.fields.distance",

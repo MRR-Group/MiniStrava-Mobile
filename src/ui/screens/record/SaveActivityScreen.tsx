@@ -177,6 +177,11 @@ export function SaveActivityScreen() {
         return;
       }
 
+      if (distanceKm < 0.001) {
+        setError("distance", { message: t(I18N.record.save.errors.distanceMin) as any });
+        return;
+      }
+
       if (!Number.isFinite(durationMin) || durationMin <= 0) {
         setError("duration", { message: t(I18N.record.save.errors.durationRequired) as any });
         return;

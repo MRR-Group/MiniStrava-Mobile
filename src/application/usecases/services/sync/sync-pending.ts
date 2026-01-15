@@ -6,11 +6,30 @@ import { SyncQueueRepo } from "@infra/db/repositories/sync-queue.repository";
 import { manipulateAsync, SaveFormat } from "expo-image-manipulator";
 
 export async function syncPendingOnce() {
-  const jobs = await SyncQueueRepo.list(20);
+  let jobs = await SyncQueueRepo.list(20);
+
+  if (jobs.length === 0) {
+    const unsynced = await ActivityRepository.listNotSynced(20);
+    if (unsynced.length > 0) {
+      console.log("[sync] backfill queue with unsynced activities", unsynced.length);
+      for (const a of unsynced) {
+        await SyncQueueRepo.add({
+          id: `rehydrate_${a.id}`,
+          kind: "activity.create",
+          payloadJson: JSON.stringify({ localActivityId: a.id }),
+          createdAt: Date.now(),
+        });
+      }
+      jobs = await SyncQueueRepo.list(20);
+    }
+  }
+
+  console.log("[sync] queued jobs", jobs.length);
 
   for (const job of jobs) {
     try {
       if (job.kind !== "activity.create") {
+        console.log("[sync] skip job kind", job.kind);
         continue;
       }
 
@@ -18,16 +37,21 @@ export async function syncPendingOnce() {
       const a = await ActivityRepository.getById(payload.localActivityId);
 
       if (!a) {
+        console.warn("[sync] missing activity, removing job", job.id);
         await SyncQueueRepo.remove(job.id);
         continue;
       }
 
       if (a.status === "synced" && a.serverId) {
+        console.log("[sync] already synced", a.id, a.serverId);
         await SyncQueueRepo.remove(job.id);
         continue;
       }
 
       const gpsPoints = await GpsPointsRepository.listForActivity(a.id, 20000);
+      const apiPoints = gpsPoints.map((p) => ({ ...p, timestamp: Math.floor(p.timestamp / 1000) }));
+
+      console.log("[sync] sending activity", a.id, "status", a.status, "points", gpsPoints.length);
 
       let photoUri = a.photoUri ?? null;
 
@@ -40,16 +64,19 @@ export async function syncPendingOnce() {
         }
       }
 
+      const distanceM = Math.max(1, a.distanceM ?? 0);
+      const durationS = Math.max(1, a.durationS ?? 0);
+
       const fd = toFormData(
         {
           title: a.title ?? "Workout",
           notes: a.notes ?? null,
-          duration_s: a.durationS,
-          distance_m: a.distanceM,
+          duration_s: durationS,
+          distance_m: distanceM,
           started_at: new Date(a.startAt).toISOString(),
           activity_type: a.type,
 
-          gps_points: gpsPoints,
+          gps_points: apiPoints,
         },
         {
           field: "photo",
@@ -57,11 +84,27 @@ export async function syncPendingOnce() {
         }
       );
 
+      console.log("[sync] payload", {
+        id: a.id,
+        title: a.title,
+        distance_m: distanceM,
+        duration_s: durationS,
+        started_at: new Date(a.startAt).toISOString(),
+        activity_type: a.type,
+        points: apiPoints.length,
+        photo: !!photoUri,
+      });
+
       const res = await ActivitiesApi.create(fd);
 
+      console.log("[sync] server id", res.id, "for", a.id);
       await ActivityRepository.markSynced(a.id, res.id);
       await SyncQueueRepo.remove(job.id);
-    } catch (_) {
+    } catch (err) {
+      const maybeAxios = err as any;
+      const status = maybeAxios?.response?.status;
+      const data = maybeAxios?.response?.data;
+      console.warn("[sync] failed job", job.id, "status", status ?? "n/a", "data", data ?? err);
       continue;
     }
   }
