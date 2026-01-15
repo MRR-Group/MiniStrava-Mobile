@@ -64,6 +64,11 @@ export default {
       "foregroundService": {
         "notificationTitle": "MiniStrava",
         "notificationBody": "Recording your route"
+      },
+      "config": {
+        "googleMaps": {
+          "apiKey": process.env.GOOGLE_MAPS_API_KEY
+        }
       }
     },
     "extra": {
