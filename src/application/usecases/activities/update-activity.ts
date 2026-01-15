@@ -40,23 +40,31 @@ export async function updateActivityUseCase(input: UpdateActivityInput) {
     updatedAt: Date.now(),
   });
 
-  if (current.serverId) {
-    const jobs = await SyncQueueRepo.list(100);
-    for (const job of jobs) {
-      if (job.kind !== "activity.update") continue;
-      try {
-        const payload = JSON.parse(job.payloadJson) as { localActivityId?: string };
-        if (payload.localActivityId === input.id) {
-          await SyncQueueRepo.remove(job.id);
-        }
-      } catch {
-      }
-    }
+  const jobs = await SyncQueueRepo.list(200);
 
+  for (const job of jobs) {
+    if (job.kind !== "activity.create" && job.kind !== "activity.update") continue;
+    try {
+      const payload = JSON.parse(job.payloadJson) as { localActivityId?: string };
+      if (payload.localActivityId === input.id) {
+        await SyncQueueRepo.remove(job.id);
+      }
+    } catch {
+    }
+  }
+
+  if (current.serverId) {
     await SyncQueueRepo.add({
       id: `sync_update_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
       kind: "activity.update",
       payloadJson: JSON.stringify({ localActivityId: input.id, serverId: current.serverId }),
+      createdAt: Date.now(),
+    });
+  } else {
+    await SyncQueueRepo.add({
+      id: `sync_create_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
+      kind: "activity.create",
+      payloadJson: JSON.stringify({ localActivityId: input.id }),
       createdAt: Date.now(),
     });
   }
