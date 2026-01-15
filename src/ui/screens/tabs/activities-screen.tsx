@@ -4,13 +4,13 @@ import { useFocusEffect } from "expo-router";
 
 import { listActivities } from "@app/usecases/activities/list-activities";
 import { syncPendingOnce } from "@app/usecases/services/sync/sync-pending";
-import { Background } from "@ui/components/Background";
-import { Screen } from "@ui/components/Screen";
-import { Card } from "@ui/components/Card";
-import { Button } from "@ui/components/Button";
-import { useT } from "@/core/i18n/useT";
+import { Background } from "@ui/components/background";
+import { Screen } from "@ui/components/screen";
+import { Card } from "@ui/components/card";
+import { Button } from "@ui/components/button";
+import { useT } from "@/core/i18n/use-t";
 import { I18N } from "@/core/i18n/keys";
-import { ActivityListItem } from "@/ui/components/ActivityListItem";
+import { ActivityListItem } from "@/ui/components/activity-list-item";
 
 type ActivityItem = Awaited<ReturnType<typeof listActivities>>[number];
 
@@ -23,14 +23,15 @@ export function ActivitiesScreen() {
     try {
       await syncPendingOnce();
     } catch {
-      // ignore sync errors; list still loads
     }
     const data = await listActivities(200);
     setItems(data);
   };
 
   const handleSyncPress = async () => {
-    if (syncing) return;
+    if (syncing) {
+      return;
+    }
     setSyncing(true);
     try {
       await syncPendingOnce();

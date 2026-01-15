@@ -2,8 +2,8 @@ import React from "react";
 import { Text, View } from "react-native";
 import dayjs from "dayjs";
 
-import { Card } from "@/ui/components/Card";
-import { useT } from "@/core/i18n/useT";
+import { Card } from "@/ui/components/card";
+import { useT } from "@/core/i18n/use-t";
 import { I18N } from "@/core/i18n/keys";
 import { ActivityType } from "@infra/db/repositories/activities.repository";
 

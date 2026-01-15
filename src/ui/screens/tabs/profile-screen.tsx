@@ -7,14 +7,14 @@ import { useQuery } from "@tanstack/react-query";
 import { logout } from "@/application/usecases/auth/logout";
 import { getProfileSummary } from "@app/usecases/profile/get-profile-summary";
 import { useSessionStore } from "@/state/session.store";
-import { useT } from "@/core/i18n/useT";
+import { useT } from "@/core/i18n/use-t";
 import { I18N } from "@/core/i18n/keys";
-import { Background } from "@ui/components/Background";
-import { Screen } from "@/ui/components/Screen";
-import { Card } from "@/ui/components/Card";
-import { StatTile } from "@/ui/components/StatTile";
-import { Button } from "@/ui/components/Button";
-import { PrimaryButton } from "@/ui/components/PrimaryButton";
+import { Background } from "@ui/components/background";
+import { Screen } from "@/ui/components/screen";
+import { Card } from "@/ui/components/card";
+import { StatTile } from "@/ui/components/stat-tile";
+import { Button } from "@/ui/components/button";
+import { PrimaryButton } from "@/ui/components/primary-button";
 import { AuthApi } from "@/infrastructure/api/auth.api";
 
 function formatDistance(meters: number) {

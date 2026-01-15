@@ -1,4 +1,4 @@
-import { ActivitiesScreen } from "@/ui/screens/tabs/ActivitiesScreen";
+import { ActivitiesScreen } from "@/ui/screens/tabs/activities-screen";
 
 export default function ActivitiesRoute() {
   return <ActivitiesScreen />;

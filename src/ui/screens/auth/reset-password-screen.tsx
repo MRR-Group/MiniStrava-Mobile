@@ -3,19 +3,19 @@ import { Text, View } from "react-native";
 import { useForm } from "react-hook-form";
 import { router } from "expo-router";
 
-import { Background } from "@/ui/components/Background";
-import { Card } from "@/ui/components/Card";
-import { Screen } from "@/ui/components/Screen";
-import { Input } from "@/ui/components/Input";
-import { Button } from "@/ui/components/Button";
-import { PrimaryButton } from "@/ui/components/PrimaryButton";
-import { CodeInput } from "@/ui/components/CodeInput";
+import { Background } from "@/ui/components/background";
+import { Card } from "@/ui/components/card";
+import { Screen } from "@/ui/components/screen";
+import { Input } from "@/ui/components/input";
+import { Button } from "@/ui/components/button";
+import { PrimaryButton } from "@/ui/components/primary-button";
+import { CodeInput } from "@/ui/components/code-input";
 
-import { forgotPassword } from "@/application/usecases/auth/forgotPassword";
-import { resetPassword } from "@/application/usecases/auth/resetPassword";
-import { handleLaravel422 } from "@/infrastructure/api/handleLaravelErrors";
+import { forgotPassword } from "@/application/usecases/auth/forgot-password";
+import { resetPassword } from "@/application/usecases/auth/reset-password";
+import { handleLaravel422 } from "@/infrastructure/api/handle-laravel-errors";
 
-import { useT } from "@/core/i18n/useT";
+import { useT } from "@/core/i18n/use-t";
 import { I18N } from "@/core/i18n/keys";
 
 type Step1Form = {

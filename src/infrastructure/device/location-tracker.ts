@@ -66,7 +66,9 @@ export async function startBackgroundTracking(notificationText: string) {
   ensureLocationTaskDefined();
 
   const started = await Location.hasStartedLocationUpdatesAsync(TASK_NAME);
-  if (started) return;
+  if (started) {
+    return;
+  }
 
   await Location.startLocationUpdatesAsync(TASK_NAME, {
     accuracy: Location.Accuracy.High,
@@ -90,7 +92,9 @@ export async function startBackgroundTracking(notificationText: string) {
 
 export async function stopBackgroundTracking() {
   const started = await Location.hasStartedLocationUpdatesAsync(TASK_NAME);
-  if (!started) return;
+  if (!started) {
+    return;
+  }
 
   await Location.stopLocationUpdatesAsync(TASK_NAME);
 }

@@ -4,21 +4,21 @@ import { router } from "expo-router";
 import MapView, { Marker, Polyline, Region } from "react-native-maps";
 import * as Location from "expo-location";
 
-import { Screen } from "@/ui/components/Screen";
-import { Card } from "@/ui/components/Card";
-import { PrimaryButton } from "@/ui/components/PrimaryButton";
-import { Button } from "@/ui/components/Button";
-import { StatTile } from "@/ui/components/StatTile";
-import { Background } from "@/ui/components/Background";
+import { Screen } from "@/ui/components/screen";
+import { Card } from "@/ui/components/card";
+import { PrimaryButton } from "@/ui/components/primary-button";
+import { Button } from "@/ui/components/button";
+import { StatTile } from "@/ui/components/stat-tile";
+import { Background } from "@/ui/components/background";
 
 import { useRecordingStore } from "@/state/recording.store";
 import { startRecordingUseCase } from "@app/usecases/activities/start-recording";
 import { pauseRecordingUseCase } from "@app/usecases/activities/pause-recording";
 import { resumeRecordingUseCase } from "@app/usecases/activities/resume-recording";
 import { discardRecordingUseCase } from "@app/usecases/activities/discard-recording";
-import { useConfirm } from "@/ui/confirm/ConfirmContext";
+import { useConfirm } from "@/ui/confirm/confirm-context";
 
-import { useT } from "@/core/i18n/useT";
+import { useT } from "@/core/i18n/use-t";
 import { I18N } from "@/core/i18n/keys";
 import { useElapsed } from "@ui/hooks/use-elapsed";
 
@@ -56,7 +56,8 @@ export function RecordScreen() {
   const elapsed = useElapsed(isRecording, elapsedMs, startedAtMs);
   const durationS = Math.floor(elapsed / 1000);
 
-  const minDistanceForSpeed = 20; // show speed after 20 m to reduce noise
+  const minDistanceForSpeed = 20;
+  
   const avgSpeedKmh =
     distanceM >= minDistanceForSpeed && durationS > 0
       ? (distanceM / durationS) * 3.6
@@ -74,7 +75,9 @@ export function RecordScreen() {
     (async () => {
       try {
         const perm = await Location.requestForegroundPermissionsAsync();
-        if (perm.status !== "granted") return;
+        if (perm.status !== "granted") {
+          return;
+        }
 
         const loc = await Location.getCurrentPositionAsync({ accuracy: Location.Accuracy.Balanced });
 
@@ -92,7 +95,9 @@ export function RecordScreen() {
   }, []);
 
   useEffect(() => {
-    if (!lastCoord || !mapRef.current) return;
+    if (!lastCoord || !mapRef.current) {
+      return;
+    }
 
     mapRef.current.animateCamera(
       {

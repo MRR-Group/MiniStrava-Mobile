@@ -1,7 +1,7 @@
 import React from "react";
 import { Pressable, Text, View } from "react-native";
 import { setAppLanguage } from "@/core/i18n/i18n";
-import { useT } from "@/core/i18n/useT";
+import { useT } from "@/core/i18n/use-t";
 
 export function LanguageToggle() {
   const { lang } = useT();

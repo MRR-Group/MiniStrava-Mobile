@@ -15,9 +15,9 @@ type RecordingState = {
   isRecording: boolean;
   isPaused: boolean;
 
-  startAtMs: number | null; // initial start timestamp
-  startedAtMs: number | null; // timestamp of the current active segment
-  elapsedMs: number; // accumulated duration excluding the active segment
+  startAtMs: number | null;
+  startedAtMs: number | null;
+  elapsedMs: number;
 
   distanceM: number;
   points: RecordingPoint[];

@@ -1,10 +1,11 @@
 import React, { useEffect, useState } from "react";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import type { AuthUser } from "@/state/session.store";
 import { useSessionStore } from "@/state/session.store";
 import { AuthApi } from "@/infrastructure/api/auth.api";
 import { initI18n } from "@/core/i18n/i18n";
 import { useDb } from "@infra/db/use-db";
-import { ConfirmProvider } from "@ui/confirm/ConfirmContext";
+import { ConfirmProvider } from "@ui/confirm/confirm-context";
 import { ensureLocationTaskDefined } from "@infra/device/location-tracker";
 
 const qc = new QueryClient({
@@ -16,8 +17,10 @@ const qc = new QueryClient({
   },
 });
 
+type SessionState = ReturnType<typeof useSessionStore.getState>;
+
 export function AppProviders({ children }: { children: React.ReactNode }) {
-  const hydrate = useSessionStore((s) => s.hydrate);
+  const hydrate = useSessionStore((s: SessionState) => s.hydrate);
   const [ready, setReady] = useState(false);
   
   useDb();
@@ -37,17 +40,20 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
   useEffect(() => {
     const { token, user } = useSessionStore.getState();
 
-    if (!token) return;
-    // If we already have user from cache, don't force refresh; allow manual refresh on profile.
-    if (user) return;
+    if (!token) {
+      return;
+    }
+    if (user) {
+      return;
+    }
 
     AuthApi.me()
-      .then((u) => useSessionStore.getState().setUser(u))
+      .then((u: AuthUser) => useSessionStore.getState().setUser(u))
       .catch(() => useSessionStore.getState().clearSession());
   }, []);
 
   useEffect(() => {
-    const unsub = useSessionStore.subscribe((state, prev) => {
+    const unsub = useSessionStore.subscribe((state: SessionState, prev: SessionState) => {
       if (prev.token && !state.token) {
         qc.clear();
       }
@@ -63,6 +69,6 @@ export function AppProviders({ children }: { children: React.ReactNode }) {
   return (
     <ConfirmProvider>
       <QueryClientProvider client={qc}>{children}</QueryClientProvider>
-  </ConfirmProvider>
-  )
+    </ConfirmProvider>
+  );
 }

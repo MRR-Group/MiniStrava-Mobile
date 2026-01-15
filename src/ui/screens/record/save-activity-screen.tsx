@@ -6,22 +6,22 @@ import * as ImagePicker from "expo-image-picker";
 import dayjs from "dayjs";
 import { DateTimePickerAndroid } from "@react-native-community/datetimepicker";
 
-import { Screen } from "@/ui/components/Screen";
-import { Card } from "@/ui/components/Card";
-import { Input } from "@/ui/components/Input";
-import { PrimaryButton } from "@/ui/components/PrimaryButton";
-import { Button } from "@/ui/components/Button";
-import { Segmented } from "@/ui/components/Segmented";
+import { Screen } from "@/ui/components/screen";
+import { Card } from "@/ui/components/card";
+import { Input } from "@/ui/components/input";
+import { PrimaryButton } from "@/ui/components/primary-button";
+import { Button } from "@/ui/components/button";
+import { Segmented } from "@/ui/components/segmented";
 
 import { useRecordingStore } from "@/state/recording.store";
 import { saveRecordingUseCase } from "@app/usecases/activities/save-recording";
 import { discardRecordingUseCase } from "@app/usecases/activities/discard-recording";
 import { saveManualActivityUseCase } from "@app/usecases/activities/save-manual-activity";
-import { useConfirm } from "@/ui/confirm/ConfirmContext";
+import { useConfirm } from "@/ui/confirm/confirm-context";
 
-import { useT } from "@/core/i18n/useT";
+import { useT } from "@/core/i18n/use-t";
 import { I18N } from "@/core/i18n/keys";
-import { Background } from "@ui/components/Background";
+import { Background } from "@ui/components/background";
 import { ActivityType } from "@infra/db/repositories/activities.repository";
 
 type Form = {
@@ -125,7 +125,9 @@ export function SaveActivityScreen() {
   };
 
   const openDatePicker = () => {
-    if (Platform.OS !== "android") return;
+    if (Platform.OS !== "android") {
+      return;
+    }
 
     DateTimePickerAndroid.open({
       value: dayjs(dateValue, "YYYY-MM-DD", true).isValid()
@@ -141,7 +143,9 @@ export function SaveActivityScreen() {
   };
 
   const openTimePicker = () => {
-    if (Platform.OS !== "android") return;
+    if (Platform.OS !== "android") {
+      return;
+    }
 
     const base = dayjs(`${dateValue} ${timeValue}`, "YYYY-MM-DD HH:mm", true).isValid()
       ? dayjs(`${dateValue} ${timeValue}`, "YYYY-MM-DD HH:mm")

@@ -16,8 +16,12 @@ export type AppendGpsPointInput = {
 export async function appendGpsPointUseCase(input: AppendGpsPointInput) {
   const store = useRecordingStore.getState();
 
-  if (!store.isRecording) return;
-  if (store.recordingId !== input.recordingId) return;
+  if (!store.isRecording) {
+    return;
+  }
+  if (store.recordingId !== input.recordingId) {
+    return;
+  }
 
   if (input.accuracyM != null && input.accuracyM > 50) {
     return;
@@ -46,9 +50,15 @@ export async function appendGpsPointUseCase(input: AppendGpsPointInput) {
   const dtSec = Math.max(0, (input.timestamp - last.timestamp) / 1000);
   const speedMps = dtSec > 0 ? delta / dtSec : 0;
 
-  if (delta < 0.2) return;
-  if (delta > 120) return;
-  if (speedMps > 15) return; 
+  if (delta < 0.2) {
+    return;
+  }
+  if (delta > 120) {
+    return;
+  }
+  if (speedMps > 15) {
+    return;
+  } 
 
   const acc = input.accuracyM ?? last.accuracyM ?? 0;
   if (acc > 0 && delta < acc * 0.2) {

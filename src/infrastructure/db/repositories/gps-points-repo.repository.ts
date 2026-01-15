@@ -25,7 +25,9 @@ export const GpsPointsRepository = {
   },
 
   async insertMany(activityId: string, points: Array<Omit<LocalGpsPoint, "activityId" | "id">>) {
-    if (!points.length) return;
+    if (!points.length) {
+      return;
+    }
 
     await db.insert(gpsPoints).values(
       points.map((p) => ({
