@@ -29,8 +29,10 @@ export async function saveRecordingUseCase(input: SaveRecordingInput) {
 
   await stopBackgroundTracking();
 
+  const activityId = state.recordingId;
+
   await ActivityRepository.create({
-    id: state.recordingId,
+    id: activityId,
     type: input.type,
     status: "finished",
     title: input.title,
@@ -48,12 +50,12 @@ export async function saveRecordingUseCase(input: SaveRecordingInput) {
   await SyncQueueRepo.add({
     id: `sync_${Date.now()}_${Math.random().toString(36).slice(2, 6)}`,
     kind: "activity.create",
-    payloadJson: JSON.stringify({ localActivityId: state.recordingId }),
+    payloadJson: JSON.stringify({ localActivityId: activityId }),
     createdAt: Date.now(),
   });
 
   await GpsPointsRepository.insertMany(
-    state.recordingId,
+    activityId,
     state.points.map((p) => ({
       lat: p.lat,
       lng: p.lng,
@@ -64,4 +66,6 @@ export async function saveRecordingUseCase(input: SaveRecordingInput) {
   );
 
   state.discard();
+
+  return activityId;
 }

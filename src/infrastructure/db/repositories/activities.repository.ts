@@ -56,6 +56,40 @@ export const ActivityRepository = {
       .where(eq(activities.id, input.id));
   },
 
+  async update(input: {
+    id: string;
+    type: ActivityType;
+    status?: "finished" | "recording" | "synced";
+    title: string;
+    notes: string | null;
+    startAt: number;
+    endAt: number;
+    distanceM: number;
+    durationS: number;
+    avgSpeedMps: number | null;
+    avgPaceSecPerKm: number | null;
+    photoUri: string | null;
+    updatedAt: number;
+  }) {
+    await db
+      .update(activities)
+      .set({
+        type: input.type,
+        status: input.status ?? "finished",
+        title: input.title,
+        notes: input.notes,
+        startAt: input.startAt,
+        endAt: input.endAt,
+        distanceM: input.distanceM,
+        durationS: input.durationS,
+        avgSpeedMps: input.avgSpeedMps,
+        avgPaceSecPerKm: input.avgPaceSecPerKm,
+        photoUri: input.photoUri,
+        updatedAt: input.updatedAt,
+      })
+      .where(eq(activities.id, input.id));
+  },
+
   async getById(id: string) {
     const rows = await db.select().from(activities).where(eq(activities.id, id)).limit(1);
 
@@ -110,5 +144,9 @@ export const ActivityRepository = {
       .update(activities)
       .set({ status: "synced", serverId, updatedAt: Date.now() })
       .where(eq(activities.id, localId));
+  },
+
+  async delete(id: string) {
+    await db.delete(activities).where(eq(activities.id, id));
   },
 };

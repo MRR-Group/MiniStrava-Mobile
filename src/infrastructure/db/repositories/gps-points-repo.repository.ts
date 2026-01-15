@@ -49,4 +49,8 @@ export const GpsPointsRepository = {
       .orderBy(gpsPoints.id)
       .limit(limit)) as any;
   },
+
+  async deleteForActivity(activityId: string) {
+    await db.delete(gpsPoints).where(eq(gpsPoints.activityId, activityId));
+  },
 };

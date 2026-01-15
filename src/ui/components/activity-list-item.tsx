@@ -1,5 +1,6 @@
 import React from "react";
-import { Text, View } from "react-native";
+import { Pressable, Text, View } from "react-native";
+import { router } from "expo-router";
 import dayjs from "dayjs";
 
 import { Card } from "@/ui/components/card";
@@ -70,31 +71,37 @@ export function ActivityListItem({ item }: ActivityListItemProps) {
   const dateLabel = dayjs(item.startAt).format("YYYY-MM-DD HH:mm");
 
   return (
-    <View className="p-4 w-full">
-      <Card>
-        <View className="gap-3 p-4">
-          <View className="flex-row items-center gap-3">
-            <Text className="text-xl">{typeLabel(item.type)}</Text>
-            <View className="w-full">
-              <Text className="text-lg font-semibold text-text">{item.title || "—"}</Text>
-              <Text className="text-xs text-muted">{dateLabel}</Text>
+    <Pressable
+      className="w-full"
+      onPress={() => router.push({ pathname: "/(tabs)/activities/[id]", params: { id: item.id } })}
+      accessibilityRole="button"
+    >
+      <View className="p-4 w-full">
+        <Card>
+          <View className="gap-3 p-4">
+            <View className="flex-row items-center gap-3">
+              <Text className="text-xl">{typeLabel(item.type)}</Text>
+              <View className="w-full">
+                <Text className="text-lg font-semibold text-text">{item.title || "—"}</Text>
+                <Text className="text-xs text-muted">{dateLabel}</Text>
+              </View>
+            </View>
+
+            <StatusBadge status={item.status} />
+
+            <View className="flex-row gap-3">
+              <View className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
+                <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.activities.fields.distance)}</Text>
+                <Text className="text-base font-semibold text-text">{formatDistance(item.distanceM)}</Text>
+              </View>
+              <View className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
+                <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.activities.fields.duration)}</Text>
+                <Text className="text-base font-semibold text-text">{formatDuration(item.durationS)}</Text>
+              </View>
             </View>
           </View>
-
-          <StatusBadge status={item.status} />
-
-          <View className="flex-row gap-3">
-            <View className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-              <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.activities.fields.distance)}</Text>
-              <Text className="text-base font-semibold text-text">{formatDistance(item.distanceM)}</Text>
-            </View>
-            <View className="flex-1 rounded-xl border border-white/10 bg-white/5 px-3 py-2">
-              <Text className="text-[11px] uppercase tracking-wide text-muted">{t(I18N.activities.fields.duration)}</Text>
-              <Text className="text-base font-semibold text-text">{formatDuration(item.durationS)}</Text>
-            </View>
-          </View>
-        </View>
-      </Card>
-    </View>
+        </Card>
+      </View>
+    </Pressable>
   );
 }

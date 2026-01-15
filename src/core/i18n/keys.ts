@@ -195,6 +195,29 @@ export const I18N = {
       duration: "activities.fields.duration",
       date: "activities.fields.date",
     },
+    detail: {
+      title: "activities.detail.title",
+      back: "activities.detail.back",
+      notFound: "activities.detail.notFound",
+      edit: "activities.detail.edit",
+      delete: "activities.detail.delete",
+      deleting: "activities.detail.deleting",
+      pace: "activities.detail.pace",
+      confirm: {
+        deleteTitle: "activities.detail.confirm.deleteTitle",
+        deleteDesc: "activities.detail.confirm.deleteDesc",
+        deleteConfirm: "activities.detail.confirm.deleteConfirm",
+        deleteCancel: "activities.detail.confirm.deleteCancel",
+      },
+    },
+    edit: {
+      title: "activities.edit.title",
+      actions: {
+        save: "activities.edit.actions.save",
+        saving: "activities.edit.actions.saving",
+        cancel: "activities.edit.actions.cancel",
+      },
+    },
   },
   common: {
     back: "common.back",

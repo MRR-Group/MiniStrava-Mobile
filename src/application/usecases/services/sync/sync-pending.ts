@@ -28,78 +28,131 @@ export async function syncPendingOnce() {
 
   for (const job of jobs) {
     try {
-      if (job.kind !== "activity.create") {
-        console.log("[sync] skip job kind", job.kind);
-        continue;
-      }
+      if (job.kind === "activity.create") {
+        const payload = JSON.parse(job.payloadJson) as { localActivityId: string };
+        const a = await ActivityRepository.getById(payload.localActivityId);
 
-      const payload = JSON.parse(job.payloadJson) as { localActivityId: string };
-      const a = await ActivityRepository.getById(payload.localActivityId);
-
-      if (!a) {
-        console.warn("[sync] missing activity, removing job", job.id);
-        await SyncQueueRepo.remove(job.id);
-        continue;
-      }
-
-      if (a.status === "synced" && a.serverId) {
-        console.log("[sync] already synced", a.id, a.serverId);
-        await SyncQueueRepo.remove(job.id);
-        continue;
-      }
-
-      const gpsPoints = await GpsPointsRepository.listForActivity(a.id, 20000);
-      const apiPoints = gpsPoints.map((p) => ({ ...p, timestamp: Math.floor(p.timestamp / 1000) }));
-
-      console.log("[sync] sending activity", a.id, "status", a.status, "points", gpsPoints.length);
-
-      let photoUri = a.photoUri ?? null;
-
-      if (photoUri && !photoUri.toLowerCase().endsWith(".png")) {
-        try {
-          const res = await manipulateAsync(photoUri, [], { compress: 1, format: SaveFormat.PNG });
-          photoUri = res.uri;
-        } catch {
-          photoUri = null;
+        if (!a) {
+          console.warn("[sync] missing activity, removing job", job.id);
+          await SyncQueueRepo.remove(job.id);
+          continue;
         }
-      }
 
-      const distanceM = Math.max(1, a.distanceM ?? 0);
-      const durationS = Math.max(1, a.durationS ?? 0);
+        if (a.status === "synced" && a.serverId) {
+          console.log("[sync] already synced", a.id, a.serverId);
+          await SyncQueueRepo.remove(job.id);
+          continue;
+        }
 
-      const fd = toFormData(
-        {
-          title: a.title ?? "Workout",
-          notes: a.notes ?? null,
-          duration_s: durationS,
+        const gpsPoints = await GpsPointsRepository.listForActivity(a.id, 20000);
+        const apiPoints = gpsPoints.map((p) => ({ ...p, timestamp: Math.floor(p.timestamp / 1000) }));
+
+        console.log("[sync] sending activity", a.id, "status", a.status, "points", gpsPoints.length);
+
+        let photoUri = a.photoUri ?? null;
+
+        if (photoUri && !photoUri.toLowerCase().endsWith(".png")) {
+          try {
+            const res = await manipulateAsync(photoUri, [], { compress: 1, format: SaveFormat.PNG });
+            photoUri = res.uri;
+          } catch {
+            photoUri = null;
+          }
+        }
+
+        const distanceM = Math.max(1, a.distanceM ?? 0);
+        const durationS = Math.max(1, a.durationS ?? 0);
+
+        const fd = toFormData(
+          {
+            title: a.title ?? "Workout",
+            notes: a.notes ?? null,
+            duration_s: durationS,
+            distance_m: distanceM,
+            started_at: new Date(a.startAt).toISOString(),
+            activity_type: a.type,
+
+            gps_points: apiPoints,
+          },
+          {
+            field: "photo",
+            file: photoUri ? { uri: photoUri, type: "image/png" } : null,
+          }
+        );
+
+        console.log("[sync] payload", {
+          id: a.id,
+          title: a.title,
           distance_m: distanceM,
+          duration_s: durationS,
           started_at: new Date(a.startAt).toISOString(),
           activity_type: a.type,
+          points: apiPoints.length,
+          photo: !!photoUri,
+        });
 
-          gps_points: apiPoints,
-        },
-        {
-          field: "photo",
-          file: photoUri ? { uri: photoUri, type: "image/png" } : null,
+        const res = await ActivitiesApi.create(fd);
+
+        console.log("[sync] server id", res.id, "for", a.id);
+        await ActivityRepository.markSynced(a.id, res.id);
+        await SyncQueueRepo.remove(job.id);
+        continue;
+      }
+
+      if (job.kind === "activity.update") {
+        const payload = JSON.parse(job.payloadJson) as { localActivityId: string; serverId?: number };
+        const a = await ActivityRepository.getById(payload.localActivityId);
+
+        if (!a) {
+          console.warn("[sync] missing activity for update, removing job", job.id);
+          await SyncQueueRepo.remove(job.id);
+          continue;
         }
-      );
 
-      console.log("[sync] payload", {
-        id: a.id,
-        title: a.title,
-        distance_m: distanceM,
-        duration_s: durationS,
-        started_at: new Date(a.startAt).toISOString(),
-        activity_type: a.type,
-        points: apiPoints.length,
-        photo: !!photoUri,
-      });
+        if (!payload.serverId) {
+          console.warn("[sync] missing serverId for update, removing job", job.id);
+          await SyncQueueRepo.remove(job.id);
+          continue;
+        }
 
-      const res = await ActivitiesApi.create(fd);
+        let photoUri = a.photoUri ?? null;
 
-      console.log("[sync] server id", res.id, "for", a.id);
-      await ActivityRepository.markSynced(a.id, res.id);
-      await SyncQueueRepo.remove(job.id);
+        if (photoUri && !photoUri.toLowerCase().endsWith(".png")) {
+          try {
+            const res = await manipulateAsync(photoUri, [], { compress: 1, format: SaveFormat.PNG });
+            photoUri = res.uri;
+          } catch {
+            photoUri = null;
+          }
+        }
+
+        const distanceM = Math.max(1, a.distanceM ?? 0);
+        const durationS = Math.max(1, a.durationS ?? 0);
+
+        const fd = toFormData(
+          {
+            title: a.title ?? "Workout",
+            notes: a.notes ?? null,
+            duration_s: durationS,
+            distance_m: distanceM,
+            started_at: new Date(a.startAt).toISOString(),
+            activity_type: a.type,
+          },
+          {
+            field: "photo",
+            file: photoUri ? { uri: photoUri, type: "image/png" } : null,
+          }
+        );
+
+        console.log("[sync] updating activity", a.id, "server", payload.serverId);
+
+        await ActivitiesApi.update(payload.serverId, fd);
+        await ActivityRepository.markSynced(a.id, payload.serverId);
+        await SyncQueueRepo.remove(job.id);
+        continue;
+      }
+
+      console.log("[sync] skip job kind", job.kind);
     } catch (err) {
       const maybeAxios = err as any;
       const status = maybeAxios?.response?.status;

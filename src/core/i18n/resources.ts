@@ -127,6 +127,29 @@ export const resources = {
           duration: "Czas",
           date: "Data",
         },
+        detail: {
+          title: "Szczegóły aktywności",
+          back: "Powrót",
+          notFound: "Nie znaleziono aktywności",
+          edit: "Edytuj",
+          delete: "Usuń",
+          deleting: "Usuwam...",
+          pace: "Tempo",
+          confirm: {
+            deleteTitle: "Usunąć aktywność?",
+            deleteDesc: "Tej operacji nie można cofnąć.",
+            deleteConfirm: "Usuń",
+            deleteCancel: "Anuluj",
+          },
+        },
+        edit: {
+          title: "Edytuj aktywność",
+          actions: {
+            save: "Zapisz zmiany",
+            saving: "Zapisywanie...",
+            cancel: "Anuluj",
+          },
+        },
       },
       auth: {
         email: "E-mail",
@@ -321,6 +344,29 @@ export const resources = {
           distance: "Distance",
           duration: "Time",
           date: "Date",
+        },
+        detail: {
+          title: "Activity details",
+          back: "Back",
+          notFound: "Activity not found",
+          edit: "Edit",
+          delete: "Delete",
+          deleting: "Deleting...",
+          pace: "Pace",
+          confirm: {
+            deleteTitle: "Delete activity?",
+            deleteDesc: "This action cannot be undone.",
+            deleteConfirm: "Delete",
+            deleteCancel: "Cancel",
+          },
+        },
+        edit: {
+          title: "Edit activity",
+          actions: {
+            save: "Save changes",
+            saving: "Saving...",
+            cancel: "Cancel",
+          },
         },
       },
       auth: {

@@ -48,4 +48,6 @@ export async function saveManualActivityUseCase(input: SaveManualActivityInput) 
     payloadJson: JSON.stringify({ localActivityId: id }),
     createdAt: Date.now(),
   });
+
+  return id;
 }

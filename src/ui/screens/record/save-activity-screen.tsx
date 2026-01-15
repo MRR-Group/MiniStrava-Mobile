@@ -204,7 +204,7 @@ export function SaveActivityScreen() {
       setLoading(true);
 
       try {
-        await saveManualActivityUseCase({
+        const createdId = await saveManualActivityUseCase({
           type,
           title: v.title.trim(),
           notes: v.notes.trim() || null,
@@ -214,7 +214,11 @@ export function SaveActivityScreen() {
           startAtMs: startAt.valueOf(),
         });
         reset();
-        router.replace("/(tabs)");
+        if (createdId) {
+          router.replace({ pathname: "/(tabs)/activities/[id]", params: { id: createdId } });
+        } else {
+          router.replace("/(tabs)");
+        }
       } finally {
         setLoading(false);
       }
@@ -225,14 +229,18 @@ export function SaveActivityScreen() {
     setLoading(true);
 
     try {
-      await saveRecordingUseCase({
+      const createdId = await saveRecordingUseCase({
         type,
         title: v.title.trim(),
         notes: v.notes.trim() || null,
         photoUri: v.photoUri,
       });
       reset();
-      router.replace("/(tabs)");
+      if (createdId) {
+        router.replace({ pathname: "/(tabs)/activities/[id]", params: { id: createdId } });
+      } else {
+        router.replace("/(tabs)");
+      }
     } finally {
       setLoading(false);
     }
