@@ -107,6 +107,13 @@ export const resources = {
           weight: "Waga",
           birth: "Data urodzenia",
         },
+        language: {
+          title: "Język aplikacji",
+          options: {
+            pl: "Polski",
+            en: "Angielski",
+          },
+        },
         actions: {
           logout: "Wyloguj się",
           refresh: "Odśwież",
@@ -350,6 +357,13 @@ export const resources = {
           height: "Height",
           weight: "Weight",
           birth: "Birth date",
+        },
+        language: {
+          title: "App language",
+          options: {
+            pl: "Polish",
+            en: "English",
+          },
         },
         actions: {
           logout: "Sign out",

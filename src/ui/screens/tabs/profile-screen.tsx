@@ -1,4 +1,4 @@
-import React, { useEffect, useMemo } from "react";
+import React, { useEffect, useMemo, useState } from "react";
 import { Image, Text, View } from "react-native";
 import { router } from "expo-router";
 import dayjs from "dayjs";
@@ -16,6 +16,8 @@ import { StatTile } from "@/ui/components/stat-tile";
 import { Button } from "@/ui/components/button";
 import { PrimaryButton } from "@/ui/components/primary-button";
 import { AuthApi } from "@/infrastructure/api/auth.api";
+import { getCurrentLanguage, setAppLanguage } from "@/core/i18n/i18n";
+import { Segmented } from "@ui/components/segmented";
 
 function formatDistance(meters: number) {
   const km = meters / 1000;
@@ -84,6 +86,7 @@ export function ProfileScreen() {
   const { t } = useT();
   const user = useSessionStore((s) => s.user);
   const setUser = useSessionStore((s) => s.setUser);
+  const [lang, setLang] = useState<"pl" | "en">(getCurrentLanguage());
 
   const { data: summary, refetch, isFetching } = useQuery({
     queryKey: ["profile-summary"],
@@ -126,6 +129,11 @@ export function ProfileScreen() {
   const onLogout = async () => {
     await logout();
     router.replace("/(auth)/login");
+  };
+
+  const onLanguageChange = (nextLang: "pl" | "en") => {
+    setLang(nextLang);
+    void setAppLanguage(nextLang);
   };
 
   const avatarInitials = initialsFromName(user?.name);
@@ -223,6 +231,17 @@ export function ProfileScreen() {
                       value={user?.weight ? `${user.weight} kg` : ""}
                     />
                   </View>
+                </View>
+                <View className="gap-2">
+                  <Text className="text-xs text-muted">{t(I18N.profile.language.title)}</Text>
+                  <Segmented<"pl" | "en">
+                    value={lang}
+                    onChange={onLanguageChange}
+                    items={[
+                      { key: "pl", label: t(I18N.profile.language.options.pl) },
+                      { key: "en", label: t(I18N.profile.language.options.en) },
+                    ]}
+                  />
                 </View>
               </View>
 

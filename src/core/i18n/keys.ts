@@ -175,6 +175,13 @@ export const I18N = {
       weight: "profile.details.weight",
       birth: "profile.details.birth",
     },
+    language: {
+      title: "profile.language.title",
+      options: {
+        pl: "profile.language.options.pl",
+        en: "profile.language.options.en",
+      },
+    },
     actions: {
       logout: "profile.actions.logout",
       refresh: "profile.actions.refresh",
