@@ -123,6 +123,14 @@ export const resources = {
           sync: "Synchronizuj",
           syncing: "Synchronizuję...",
         },
+        leaderboard: {
+          title: "Ranking",
+          refresh: "Odśwież",
+          you: "Ty",
+          yourPosition: "Twoja pozycja: {{pos}}",
+          distanceThisWeek: "Ten tydzień",
+          empty: "Brak danych do rankingu",
+        },
         filters: {
           type: "Typ",
           date: "Zakres dat",
@@ -358,6 +366,14 @@ export const resources = {
         actions: {
           sync: "Sync",
           syncing: "Syncing...",
+        },
+        leaderboard: {
+          title: "Leaderboard",
+          refresh: "Refresh",
+          you: "You",
+          yourPosition: "Your position: {{pos}}",
+          distanceThisWeek: "This week",
+          empty: "No leaderboard data",
         },
         filters: {
           type: "Type",

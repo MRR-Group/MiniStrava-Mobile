@@ -191,6 +191,14 @@ export const I18N = {
       sync: "activities.actions.sync",
       syncing: "activities.actions.syncing",
     },
+    leaderboard: {
+      title: "activities.leaderboard.title",
+      refresh: "activities.leaderboard.refresh",
+      you: "activities.leaderboard.you",
+      yourPosition: "activities.leaderboard.yourPosition",
+      distanceThisWeek: "activities.leaderboard.distanceThisWeek",
+      empty: "activities.leaderboard.empty",
+    },
     filters: {
       type: "activities.filters.type",
       date: "activities.filters.date",
