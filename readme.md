@@ -1,22 +1,18 @@
 # MiniStrava
 
-**MiniStrava** is a mobile fitness tracking app.  
-It allows users to record workouts, track GPS routes, and analyze their performance over time.
+Mobile-first fitness tracker (Android/iOS) z panelem administracyjnym i REST API. Rejestruje biegi, jazdy i spacery z GPS, pokazuje statystyki i rankingi, eksportuje trasy oraz pozwala adminowi zarządzać użytkownikami i aktywnościami.
 
-## Tech Stack
-- **Frontend:** React Native (Expo) + TailwindCSS  
-- **Backend:** Laravel  
-- **Database:** PostgreSQL  
-- **APIs:** GPS tracking, user profiles, activity stats
+## Stos technologiczny
+- React Native (Expo) + TailwindCSS
 
-## Features
-- 📍 Real-time GPS tracking  
-- 🏃 Activity history with stats  
-- 🗺️ Route visualization on map
+## Kluczowe funkcje
+- Rejestracja trasy z GPS (działanie w tle), historia, mapy, tempo/dystans, nazwy/notatki/zdjęcia, eksport GPX/CSV
+- Profile użytkowników, zmiana/reset hasła, statystyki i tygodniowe rankingi
+- Panel admina do przeglądania i moderacji aktywności/użytkowników, statystyki globalne
+- Dwujęzyczność (PL/EN), tryb offline z synchronizacją po odzyskaniu sieci
 
-## Local Development
+## Szybki start (aplikacja mobilna)
 ```bash
-cp .env.example .env
 npm install
-npm run start
+npx expo start
 ```
